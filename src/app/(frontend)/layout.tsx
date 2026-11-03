@@ -41,6 +41,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body>
+        {/* Sem JavaScript as entradas animadas não rodam: mostra o conteúdo direto. */}
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html:
+                '[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}',
+            }}
+          />
+        </noscript>
         <ThemeProvider>
           <MotionProvider>
             <a

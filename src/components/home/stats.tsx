@@ -19,26 +19,25 @@ export function Stats({ stats }: { stats: NonNullable<Profile['stats']> }) {
         {stats.map((stat, i) => {
           const Icon = ICONS[i % ICONS.length]
           return (
+            // <dt>/<dd> precisam ser filhos diretos do item; o ícone fica dentro do <dd>.
             <RevealItem
               key={stat.id ?? i}
-              className="flex items-center gap-4 bg-background px-3 py-5 transition-colors duration-300 hover:bg-card sm:px-5 sm:py-6"
+              className="relative flex flex-col-reverse justify-center gap-0.5 bg-background px-3 py-5 transition-colors duration-300 hover:bg-card sm:py-6 sm:pr-5 sm:pl-16"
             >
-              <Icon
-                aria-hidden="true"
-                className="hidden size-7 shrink-0 text-primary sm:block"
-                strokeWidth={1.6}
-              />
-              <div className="flex flex-col-reverse gap-0.5">
-                <dt className="text-xs text-muted-foreground sm:text-sm">{stat.label}</dt>
-                <dd
-                  className={cn(
-                    'm-0 text-[15px] font-extrabold sm:text-lg',
-                    stat.accent && 'text-primary light:text-brand-ink',
-                  )}
-                >
-                  {stat.value}
-                </dd>
-              </div>
+              <dt className="text-xs text-muted-foreground sm:text-sm">{stat.label}</dt>
+              <dd
+                className={cn(
+                  'm-0 text-[15px] font-extrabold sm:text-lg',
+                  stat.accent && 'text-primary light:text-brand-ink',
+                )}
+              >
+                <Icon
+                  aria-hidden="true"
+                  className="absolute top-1/2 left-5 hidden size-7 -translate-y-1/2 text-primary sm:block"
+                  strokeWidth={1.6}
+                />
+                {stat.value}
+              </dd>
             </RevealItem>
           )
         })}
