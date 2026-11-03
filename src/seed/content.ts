@@ -1,3 +1,5 @@
+import type { TechIconName } from '@/lib/tech-icon-options'
+
 /**
  * Conteúdo inicial, tirado do design (canvas "Portfólio Lucas Paiva").
  * Campos que o design deixou como placeholder ficam vazios para preencher no painel.
@@ -5,6 +7,7 @@
 
 type TechSeed = {
   name: string
+  icon?: TechIconName
   abbr: string
   group: 'frontend' | 'backend' | 'mobile' | 'data' | 'tools' | 'other'
   appearance: 'tint' | 'solid' | 'outline' | 'neutral'
@@ -17,15 +20,24 @@ type TechSeed = {
 export const technologies: TechSeed[] = [
   {
     name: 'React',
+    icon: 'react',
     abbr: 'Re',
     group: 'frontend',
     appearance: 'tint',
     color: '#7FD8F0',
     showInHero: true,
   },
-  { name: 'Next.js', abbr: 'N', group: 'frontend', appearance: 'outline', showInHero: true },
+  {
+    name: 'Next.js',
+    icon: 'nextdotjs',
+    abbr: 'N',
+    group: 'frontend',
+    appearance: 'outline',
+    showInHero: true,
+  },
   {
     name: 'TypeScript',
+    icon: 'typescript',
     abbr: 'TS',
     group: 'frontend',
     appearance: 'solid',
@@ -35,55 +47,149 @@ export const technologies: TechSeed[] = [
   },
   {
     name: 'JavaScript',
+    icon: 'javascript',
     abbr: 'JS',
     group: 'frontend',
     appearance: 'solid',
     color: '#F0DB4F',
     onColor: '#0B0A09',
   },
-  { name: 'Tailwind CSS', abbr: 'Tw', group: 'frontend', appearance: 'tint', color: '#38BDF8' },
-  { name: 'shadcn/ui', abbr: '//', group: 'frontend', appearance: 'neutral' },
-  { name: 'React Query', abbr: 'RQ', group: 'frontend', appearance: 'tint', color: '#FF6B8A' },
-  { name: 'Zustand', abbr: 'Zu', group: 'frontend', appearance: 'tint', color: '#E8A657' },
-  { name: 'Figma', abbr: 'Fg', group: 'frontend', appearance: 'tint', color: '#F2A6D2' },
+  {
+    name: 'Tailwind CSS',
+    icon: 'tailwindcss',
+    abbr: 'Tw',
+    group: 'frontend',
+    appearance: 'tint',
+    color: '#38BDF8',
+  },
+  { name: 'shadcn/ui', icon: 'shadcnui', abbr: '//', group: 'frontend', appearance: 'neutral' },
+  {
+    name: 'React Query',
+    icon: 'reactquery',
+    abbr: 'RQ',
+    group: 'frontend',
+    appearance: 'tint',
+    color: '#FF6B8A',
+  },
+  {
+    name: 'Zustand',
+    icon: 'generic-state',
+    abbr: 'Zu',
+    group: 'frontend',
+    appearance: 'tint',
+    color: '#E8A657',
+  },
+  {
+    name: 'Figma',
+    icon: 'figma',
+    abbr: 'Fg',
+    group: 'frontend',
+    appearance: 'tint',
+    color: '#F2A6D2',
+  },
 
   {
     name: 'Node.js',
+    icon: 'nodedotjs',
     abbr: 'No',
     group: 'backend',
     appearance: 'tint',
     color: '#8FE0A0',
     showInHero: true,
   },
-  { name: 'NestJS', abbr: 'Ne', group: 'backend', appearance: 'tint', color: '#FF6B83' },
-  { name: 'API REST', abbr: '{}', group: 'backend', appearance: 'neutral' },
-  { name: 'OpenAI API', abbr: 'AI', group: 'backend', appearance: 'neutral' },
+  {
+    name: 'NestJS',
+    icon: 'nestjs',
+    abbr: 'Ne',
+    group: 'backend',
+    appearance: 'tint',
+    color: '#FF6B83',
+  },
+  { name: 'API REST', icon: 'generic-api', abbr: '{}', group: 'backend', appearance: 'neutral' },
+  { name: 'OpenAI API', icon: 'generic-ai', abbr: 'AI', group: 'backend', appearance: 'neutral' },
 
   {
     name: 'React Native',
+    icon: 'react',
     abbr: 'RN',
     group: 'mobile',
     appearance: 'tint',
     color: '#7FD8F0',
     showInHero: true,
   },
-  { name: 'Expo', abbr: 'Ex', group: 'mobile', appearance: 'neutral' },
-  { name: 'Google Play', abbr: '▶', group: 'mobile', appearance: 'tint', color: '#7FDBAA' },
-  { name: 'App Store', abbr: 'A', group: 'mobile', appearance: 'tint', color: '#5AA9FF' },
+  { name: 'Expo', icon: 'expo', abbr: 'Ex', group: 'mobile', appearance: 'neutral' },
+  {
+    name: 'Google Play',
+    icon: 'googleplay',
+    abbr: '▶',
+    group: 'mobile',
+    appearance: 'tint',
+    color: '#7FDBAA',
+  },
+  {
+    name: 'App Store',
+    icon: 'appstore',
+    abbr: 'A',
+    group: 'mobile',
+    appearance: 'tint',
+    color: '#5AA9FF',
+  },
 
-  { name: 'PostgreSQL', abbr: 'Pg', group: 'data', appearance: 'tint', color: '#8FB4EA' },
-  { name: 'MySQL', abbr: 'My', group: 'data', appearance: 'tint', color: '#5FB8D4' },
-  { name: 'Prisma', abbr: 'Pr', group: 'data', appearance: 'neutral' },
-  { name: 'Supabase', abbr: 'Sb', group: 'data', appearance: 'tint', color: '#3ECF8E' },
+  {
+    name: 'PostgreSQL',
+    icon: 'postgresql',
+    abbr: 'Pg',
+    group: 'data',
+    appearance: 'tint',
+    color: '#8FB4EA',
+  },
+  { name: 'MySQL', icon: 'mysql', abbr: 'My', group: 'data', appearance: 'tint', color: '#5FB8D4' },
+  { name: 'Prisma', icon: 'prisma', abbr: 'Pr', group: 'data', appearance: 'neutral' },
+  {
+    name: 'Supabase',
+    icon: 'supabase',
+    abbr: 'Sb',
+    group: 'data',
+    appearance: 'tint',
+    color: '#3ECF8E',
+  },
 
-  { name: 'Electron', abbr: 'El', group: 'tools', appearance: 'tint', color: '#9FEAF9' },
-  { name: 'GitHub', abbr: 'Gh', group: 'tools', appearance: 'neutral' },
-  { name: 'Vercel', abbr: '▲', group: 'tools', appearance: 'neutral' },
-  { name: 'Docker', abbr: 'Dk', group: 'tools', appearance: 'tint', color: '#4BA3F5' },
+  {
+    name: 'Electron',
+    icon: 'electron',
+    abbr: 'El',
+    group: 'tools',
+    appearance: 'tint',
+    color: '#9FEAF9',
+  },
+  { name: 'GitHub', icon: 'github', abbr: 'Gh', group: 'tools', appearance: 'neutral' },
+  { name: 'Vercel', icon: 'vercel', abbr: '▲', group: 'tools', appearance: 'neutral' },
+  {
+    name: 'Docker',
+    icon: 'docker',
+    abbr: 'Dk',
+    group: 'tools',
+    appearance: 'tint',
+    color: '#4BA3F5',
+  },
 
   // Só aparecem como tag nos projetos.
-  { name: 'IA', abbr: 'IA', group: 'other', appearance: 'neutral', showInStack: false },
-  { name: 'Google OAuth', abbr: 'G', group: 'other', appearance: 'neutral', showInStack: false },
+  {
+    name: 'IA',
+    icon: 'generic-ai',
+    abbr: 'IA',
+    group: 'other',
+    appearance: 'neutral',
+    showInStack: false,
+  },
+  {
+    name: 'Google OAuth',
+    icon: 'google',
+    abbr: 'G',
+    group: 'other',
+    appearance: 'neutral',
+    showInStack: false,
+  },
 ]
 
 type Column = { label: string; heading: string; body: string[] }
