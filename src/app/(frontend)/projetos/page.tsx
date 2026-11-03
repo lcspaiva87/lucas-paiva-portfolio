@@ -11,6 +11,8 @@ import { CATEGORY_LABEL } from '@/lib/labels'
 export const metadata: Metadata = {
   title: 'Projetos',
   description: 'Produtos digitais que desenvolvi, do conceito à entrega: apps mobile, web e SaaS.',
+  alternates: { canonical: '/projetos' },
+  openGraph: { url: '/projetos' },
 }
 
 export default async function ProjectsPage() {

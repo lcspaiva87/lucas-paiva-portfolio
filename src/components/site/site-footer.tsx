@@ -69,7 +69,7 @@ export async function SiteFooter() {
           </span>
           <a
             href="#topo"
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-foreground no-underline hover:text-primary"
+            className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-foreground no-underline hover:text-primary light:hover:text-brand-ink"
           >
             Voltar ao topo <span aria-hidden="true">↑</span>
           </a>

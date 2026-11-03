@@ -34,7 +34,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
           {profile.email && (
             <a
               href={`mailto:${profile.email}`}
-              className="self-start text-lg font-bold text-foreground no-underline hover:text-primary"
+              className="self-start text-lg font-bold text-foreground no-underline hover:text-primary light:hover:text-brand-ink"
             >
               {profile.email}
             </a>

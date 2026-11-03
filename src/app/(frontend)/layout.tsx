@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import type { ReactNode } from 'react'
 
@@ -6,6 +6,8 @@ import { SiteFooter } from '@/components/site/site-footer'
 import { SiteHeader } from '@/components/site/site-header'
 import { MotionProvider } from '@/components/motion/motion-provider'
 import { ThemeProvider } from '@/components/theme/theme-provider'
+import { getProfile } from '@/lib/cms'
+import { SITE_URL } from '@/lib/site'
 
 import './globals.css'
 
@@ -23,13 +25,36 @@ const dmMono = DM_Mono({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Lucas Paiva — Software Engineer',
-    template: '%s · Lucas Paiva',
-  },
-  description:
-    'Desenvolvo produtos digitais completos, do conceito à entrega, com foco em performance, experiência e impacto real no usuário.',
+// Título, descrição e redes vêm do Perfil no CMS.
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile()
+  const title = `${profile.name} — ${profile.role}`
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: `%s · ${profile.name}` },
+    description: profile.intro,
+    applicationName: profile.name,
+    authors: [{ name: profile.name, url: SITE_URL }],
+    creator: profile.name,
+    alternates: { canonical: '/' },
+    openGraph: {
+      type: 'website',
+      locale: 'pt_BR',
+      siteName: profile.name,
+      title,
+      description: profile.intro,
+      url: '/',
+    },
+    twitter: { card: 'summary_large_image', title, description: profile.intro },
+    robots: { index: true, follow: true },
+  }
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0d0d0c' },
+    { media: '(prefers-color-scheme: light)', color: '#edeae3' },
+  ],
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -41,6 +66,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body>
+        {/* Sem JavaScript as entradas animadas não rodam: mostra o conteúdo direto. */}
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html:
+                '[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}',
+            }}
+          />
+        </noscript>
         <ThemeProvider>
           <MotionProvider>
             <a
