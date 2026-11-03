@@ -122,11 +122,12 @@ Uploads com alt text obrigatório e tamanhos gerados (thumb, card, full).
 - [x] Seed com o conteúdo atual: CalorieUp, LuvePet, Scalar Workspace, Adapta, stack completa (`pnpm seed`, pode rodar de novo sem duplicar)
 
 ### Fase 3 — Páginas
-- [ ] Layout: header com nav + toggle de tema, footer
-- [ ] Home: Hero, Números, Sobre, Projetos em destaque, Experiência (timeline), Stack, Contato
-- [ ] `/projetos`: grid com filtro
-- [ ] `/projetos/[slug]`: template do case renderizando os blocos
-- [ ] Versão mobile (menu em sheet, layout 390px)
+- [x] Layout: header com nav + toggle de tema, footer
+- [x] Home: Hero, Números, Sobre, Projetos em destaque, Experiência (timeline), Stack, Contato
+- [x] `/projetos`: grid com filtro
+- [x] `/projetos/[slug]`: template do case renderizando os blocos
+- [x] Versão mobile (menu em tela cheia, layout 375px sem scroll horizontal)
+- [x] Cache Components (`'use cache'` + `cacheTag`) com revalidação ao publicar, testada em `next start`
 
 ### Fase 4 — Movimento e polimento
 - [ ] Animações de entrada, hover magnético, cards com tilt
