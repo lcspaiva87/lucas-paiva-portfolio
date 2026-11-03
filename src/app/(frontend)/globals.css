@@ -1,0 +1,224 @@
+@import 'tailwindcss';
+
+/* O tema é controlado pelo next-themes via atributo data-theme no <html>. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+/* ------------------------------------------------------------------ */
+/* Tokens — Direção visual "Precisão calma"                            */
+/* Tema escuro é o principal; o claro inverte os papéis.               */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --background: #0d0d0c;
+  --foreground: #edeae3;
+  --foreground-soft: #cfcbc3;
+  --muted-foreground: #8c8983;
+
+  --card: #161615;
+  --muted: #1e1d1b;
+
+  --border: #282725;
+  --border-subtle: #1f1e1c;
+  --border-strong: #3a3936;
+  --input: #4a4844;
+
+  --primary: #ff5a1f;
+  --primary-foreground: #0d0d0c;
+  --primary-deep: #8a2e0b;
+  --brand-soft: #3d1c0f;
+  --brand-ink: #ff8a5c;
+  --brand-line: #a8401a;
+  --glow: rgb(255 90 31 / 0.6);
+
+  /* Verde só para o status "disponível". */
+  --success: #7fdbaa;
+  --success-soft: #123826;
+  --destructive: #ff6b83;
+
+  /* Conteúdo que ainda falta preencher. */
+  --placeholder: #f5d27a;
+  --placeholder-soft: #3b3112;
+
+  /* Ícones de tecnologia derivam de uma única cor cadastrada no CMS. */
+  --tech-bg-amount: 16%;
+  --tech-ink-amount: 85%;
+  --tech-ink-base: #ffffff;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --background: #edeae3;
+  --foreground: #0d0d0c;
+  --foreground-soft: #45423d;
+  --muted-foreground: #55524c;
+
+  --card: #f7f5f0;
+  --muted: #e4e0d7;
+
+  --border: #d9d5cc;
+  --border-subtle: #e1ddd4;
+  --border-strong: #cfcac0;
+  --input: #b5b0a6;
+
+  --primary: #e8480f;
+  --primary-foreground: #0d0d0c;
+  --primary-deep: #0d0d0c;
+  --brand-soft: #ffe1d4;
+  --brand-ink: #a3300a;
+  --brand-line: #e8480f;
+  --glow: rgb(232 72 15 / 0.45);
+
+  --success: #1b6b2e;
+  --success-soft: #dff5e2;
+  --destructive: #b3203a;
+
+  --placeholder: #7a5600;
+  --placeholder-soft: #f6e7b5;
+
+  --tech-bg-amount: 18%;
+  --tech-ink-amount: 60%;
+  --tech-ink-base: #000000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-soft: var(--foreground-soft);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--primary);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-deep: var(--primary-deep);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-line: var(--brand-line);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-destructive: var(--destructive);
+  --color-placeholder: var(--placeholder);
+  --color-placeholder-soft: var(--placeholder-soft);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, monospace;
+}
+
+@theme {
+  /* Tipografia: Plus Jakarta Sans 800 nos títulos, DM Mono para metadados. */
+  --text-hero: clamp(4.5rem, 10vw, 9.375rem);
+  --text-hero--line-height: 0.86;
+  --text-hero--letter-spacing: -0.055em;
+  --text-hero--font-weight: 800;
+
+  --text-display: clamp(3.5rem, 8vw, 7.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.045em;
+  --text-display--font-weight: 800;
+
+  --text-section: clamp(2rem, 3.6vw, 3.5rem);
+  --text-section--line-height: 1.05;
+  --text-section--letter-spacing: -0.035em;
+  --text-section--font-weight: 800;
+
+  --text-card-title: 1.75rem;
+  --text-card-title--line-height: 2.125rem;
+  --text-card-title--letter-spacing: -0.025em;
+  --text-card-title--font-weight: 800;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.6;
+
+  --radius-card: 14px;
+  --radius-panel: 28px;
+
+  /* Movimento */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-blink: blink 1.1s steps(1) infinite;
+  --animate-pulse-ring: pulse-ring 1.8s ease-out infinite;
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--success) 60%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 10px color-mix(in oklab, var(--success) 0%, transparent);
+    }
+  }
+}
+
+/* Grid: 12 colunas, margem 80 (desktop) / 16 (mobile). */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1440px;
+  padding-inline: clamp(16px, 5.5vw, 80px);
+}
+
+/* "02 — Experiência · 2024 → hoje" */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: 'tnum';
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 150ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
