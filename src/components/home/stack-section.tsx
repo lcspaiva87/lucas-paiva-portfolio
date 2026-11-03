@@ -1,10 +1,10 @@
 import { Boxes, CodeXml, Database, Layers, type LucideIcon, Smartphone } from 'lucide-react'
 
 import { Tech } from '@/components/tech'
-import { Highlight } from '@/components/ui/highlight'
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal'
+import { SplitHeading } from '@/components/motion/split-heading'
 import { SectionLabel } from '@/components/ui/section-label'
 import { TechIcon } from '@/components/ui/tech-chip'
-import { plainText } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Technology } from '@/payload-types'
 
@@ -156,20 +156,19 @@ export function StackSection({
       <div className="flex flex-wrap items-end justify-between gap-x-12 gap-y-4">
         <div className="flex flex-col gap-3.5">
           <SectionLabel>Stack</SectionLabel>
-          <h2
+          <SplitHeading
             id="stack-titulo"
-            aria-label={plainText(heading)}
+            text={heading}
             className="m-0 text-[clamp(2.375rem,4.4vw,3.75rem)] leading-none font-extrabold tracking-[-0.045em]"
-          >
-            <Highlight text={heading} />
-          </h2>
+          />
         </div>
         {intro && (
           <p className="m-0 max-w-[440px] text-base leading-[1.55] text-foreground-soft">{intro}</p>
         )}
       </div>
 
-      <article
+      <Reveal
+        as="article"
         className={cn(
           'relative flex flex-wrap items-center gap-x-12 gap-y-8 overflow-hidden rounded-[18px] border border-primary p-[clamp(28px,3.5vw,44px)]',
           'bg-[color-mix(in_oklab,var(--primary)_3%,var(--background))]',
@@ -188,20 +187,25 @@ export function StackSection({
           </p>
         </div>
         <div aria-hidden="true" className="hidden w-px self-stretch bg-border xl:block" />
-        <ul className="relative m-0 grid min-w-0 flex-[1.4_1_460px] list-none grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3 p-0">
+        <RevealGroup
+          as="ul"
+          delay={0.2}
+          className="relative m-0 grid min-w-0 flex-[1.4_1_460px] list-none grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3 p-0"
+        >
           {byGroup(lead).map((tech) => (
-            <li key={tech.id}>
+            <RevealItem as="li" key={tech.id}>
               <Tech tech={tech} className="w-full" />
-            </li>
+            </RevealItem>
           ))}
-        </ul>
-      </article>
+        </RevealGroup>
+      </Reveal>
 
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+      <RevealGroup className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
         {others.map((group, i) => {
           const { title, description, Icon } = GROUPS[group]
           return (
-            <article
+            <RevealItem
+              as="article"
               key={group}
               className={cn(
                 'flex flex-col gap-3 rounded-[18px] border border-border bg-card p-7',
@@ -234,10 +238,10 @@ export function StackSection({
                   </li>
                 ))}
               </ul>
-            </article>
+            </RevealItem>
           )
         })}
-      </div>
+      </RevealGroup>
     </section>
   )
 }
