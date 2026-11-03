@@ -9,15 +9,16 @@ import { Button, ButtonArrow } from '@/components/ui/button'
 import { media } from '@/lib/cms'
 import type { Profile, Technology } from '@/payload-types'
 
-import { HeroGlobe } from './hero-globe'
+import { HeroEarth } from './hero-earth'
 
 // Posições dos chips flutuantes ao redor do globo (até 5).
+// Ficam fora da faixa central, por onde o rótulo de Fortaleza passa ao girar.
 const CHIP_POSITIONS = [
   'left-[14%] top-[4%]',
   'right-[2%] top-[1%]',
-  '-right-[2%] top-[40%]',
-  'left-[6%] top-[58%]',
-  'right-[8%] bottom-[8%]',
+  '-right-[2%] top-[22%]',
+  '-left-[2%] top-[22%]',
+  'right-[6%] bottom-[6%]',
 ]
 
 // As entradas do hero são CSS puro: começam no primeiro paint, sem esperar o JavaScript.
@@ -84,7 +85,7 @@ function CodeWindow({ profile, stack }: { profile: Profile; stack: string[] }) {
 
   return (
     <div
-      className="absolute top-[48%] left-1/2 w-[min(86%,420px)] -translate-x-1/2 -translate-y-1/2 rounded-card border border-[#6b2a10] bg-[rgb(20_17_15/0.9)] px-5 pt-4 pb-5 font-mono text-[11px] leading-[1.75] text-[#edeae3] shadow-[0_0_0_1px_rgb(255_90_31/0.15),0_24px_60px_-12px_rgb(255_90_31/0.35)] motion-safe:animate-fade-up sm:text-[13px]"
+      className="absolute bottom-0 left-0 z-10 w-[min(92%,340px)] sm:bottom-[2%] sm:w-[min(78%,340px)] rounded-card border border-[#6b2a10] bg-[rgb(20_17_15/0.82)] px-4 pt-3.5 pb-4 font-mono text-[11px] leading-[1.7] text-[#edeae3] shadow-[0_0_0_1px_rgb(255_90_31/0.15),0_24px_60px_-12px_rgb(255_90_31/0.35)] backdrop-blur-md motion-safe:animate-fade-up sm:text-xs"
       style={delay(450)}
     >
       <div aria-hidden="true" className="mb-3 flex gap-[7px]">
@@ -202,10 +203,10 @@ export function Hero({ profile, heroTechs }: { profile: Profile; heroTechs: Tech
         </div>
 
         <div
-          className="relative mx-auto aspect-[600/560] w-full max-w-[640px] min-w-0 motion-safe:animate-fade-up"
+          className="relative mx-auto aspect-[375/500] w-full max-w-[640px] min-w-0 motion-safe:animate-fade-up sm:aspect-[600/560]"
           style={delay(200)}
         >
-          <HeroGlobe />
+          <HeroEarth />
           <CodeWindow
             profile={profile}
             stack={heroTechs.map((t) => (t.abbr === 'RN' ? 'RN' : t.name)).slice(0, 4)}
