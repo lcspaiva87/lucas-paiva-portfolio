@@ -7,6 +7,8 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // Conteúdo do CMS é cacheado com 'use cache' e invalidado pelos hooks do Payload.
+  cacheComponents: true,
   images: {
     localPatterns: [
       {

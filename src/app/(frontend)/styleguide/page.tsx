@@ -89,7 +89,7 @@ function Spec({ children }: { children: ReactNode }) {
 
 export default function StyleguidePage() {
   return (
-    <main className="container-page flex flex-col gap-14 py-16 md:py-20">
+    <div className="container-page flex flex-col gap-14 py-16 md:py-20">
       <header className="flex flex-wrap items-end justify-between gap-10 border-b border-border pb-10">
         <div className="flex max-w-3xl flex-col gap-4">
           <span className="eyebrow text-muted-foreground">00 — Direção visual</span>
@@ -244,6 +244,6 @@ export default function StyleguidePage() {
           </div>
         </Block>
       </div>
-    </main>
+    </div>
   )
 }
