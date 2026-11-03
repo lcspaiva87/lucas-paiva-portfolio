@@ -5,12 +5,14 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { CaseStudyBlocks } from '@/components/case-study/blocks'
+import { JsonLd } from '@/components/json-ld'
 import { Badge } from '@/components/ui/badge'
 import { Button, ButtonArrow } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/section-label'
 import { getProjectBySlug, getProjects, hasCaseStudy, media, populated } from '@/lib/cms'
 import { formatPeriod } from '@/lib/format'
 import { CATEGORY_LABEL, LINK_LABEL, STAGE_LABEL } from '@/lib/labels'
+import { projectSchema } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 import type { Media, Technology } from '@/payload-types'
 
@@ -117,6 +119,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <article>
+      <JsonLd data={projectSchema(project)} />
       <div className="container-page pt-6">
         <Link
           href="/projetos"

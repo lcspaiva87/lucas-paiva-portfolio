@@ -5,7 +5,9 @@ import { Hero } from '@/components/home/hero'
 import { ProjectsSection } from '@/components/home/projects-section'
 import { StackSection } from '@/components/home/stack-section'
 import { Stats } from '@/components/home/stats'
+import { JsonLd } from '@/components/json-ld'
 import { getExperiences, getProfile, getProjects, getTechnologies } from '@/lib/cms'
+import { personSchema } from '@/lib/structured-data'
 
 export default async function HomePage() {
   const [profile, projects, technologies, experiences] = await Promise.all([
@@ -19,6 +21,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={personSchema(profile, technologies)} />
       <Hero profile={profile} heroTechs={technologies.filter((t) => t.showInHero)} />
       <Stats stats={profile.stats ?? []} />
       <About profile={profile} />
