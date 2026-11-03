@@ -18,6 +18,7 @@ const techIconVariants = cva(
         ],
         solid: 'bg-(--tech) font-sans font-extrabold text-(--tech-on)',
         outline: 'rounded-full border-[1.5px] border-foreground font-sans text-xs font-extrabold',
+        neutral: 'bg-muted text-foreground',
       },
     },
     defaultVariants: {
