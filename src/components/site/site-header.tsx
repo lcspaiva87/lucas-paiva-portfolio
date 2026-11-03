@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
 import { LogoMark, Wordmark } from '@/components/brand/logo'
+import { Magnetic } from '@/components/motion/magnetic'
 import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { Button, ButtonArrow } from '@/components/ui/button'
 
@@ -28,14 +29,16 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 xl:flex">
           <ThemeToggle />
-          <Button asChild size="md">
-            <Link href="/#contato">
-              Contato
-              <ButtonArrow>
-                <ArrowUpRight strokeWidth={2.4} />
-              </ButtonArrow>
-            </Link>
-          </Button>
+          <Magnetic strength={6}>
+            <Button asChild size="md">
+              <Link href="/#contato">
+                Contato
+                <ButtonArrow>
+                  <ArrowUpRight strokeWidth={2.4} />
+                </ButtonArrow>
+              </Link>
+            </Button>
+          </Magnetic>
         </div>
 
         <MobileMenu />
