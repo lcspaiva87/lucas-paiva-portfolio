@@ -36,19 +36,28 @@ const palette = [
 
 // Amostra: estes dados virão da coleção `technologies` no CMS.
 const techs = [
-  { name: 'React', icon: { abbr: 'Re', color: '#61dafb' } },
-  { name: 'Next.js', icon: { abbr: 'N', appearance: 'outline' as const } },
-  { name: 'TypeScript', icon: { abbr: 'TS', color: '#2f6fcf', appearance: 'solid' as const } },
+  { name: 'React', icon: { glyph: 'react', abbr: 'Re', color: '#61dafb' } },
+  { name: 'Next.js', icon: { glyph: 'nextdotjs', abbr: 'N', appearance: 'outline' as const } },
+  {
+    name: 'TypeScript',
+    icon: { glyph: 'typescript', abbr: 'TS', color: '#2f6fcf', appearance: 'solid' as const },
+  },
   {
     name: 'JavaScript',
-    icon: { abbr: 'JS', color: '#f0db4f', onColor: '#0b0a09', appearance: 'solid' as const },
+    icon: {
+      glyph: 'javascript',
+      abbr: 'JS',
+      color: '#f0db4f',
+      onColor: '#0b0a09',
+      appearance: 'solid' as const,
+    },
   },
-  { name: 'Tailwind CSS', icon: { abbr: 'Tw', color: '#38bdf8' } },
-  { name: 'Node.js', icon: { abbr: 'No', color: '#5fa04e' } },
-  { name: 'NestJS', icon: { abbr: 'Ne', color: '#ff4d6d' } },
-  { name: 'PostgreSQL', icon: { abbr: 'Pg', color: '#6b9bd8' } },
-  { name: 'Supabase', icon: { abbr: 'Sb', color: '#3ecf8e' } },
-  { name: 'Figma', icon: { abbr: 'Fg', color: '#f2a6d2' } },
+  { name: 'Tailwind CSS', icon: { glyph: 'tailwindcss', abbr: 'Tw', color: '#38bdf8' } },
+  { name: 'Node.js', icon: { glyph: 'nodedotjs', abbr: 'No', color: '#5fa04e' } },
+  { name: 'NestJS', icon: { glyph: 'nestjs', abbr: 'Ne', color: '#ff4d6d' } },
+  { name: 'PostgreSQL', icon: { glyph: 'postgresql', abbr: 'Pg', color: '#6b9bd8' } },
+  { name: 'Supabase', icon: { glyph: 'supabase', abbr: 'Sb', color: '#3ecf8e' } },
+  { name: 'Figma', icon: { glyph: 'figma', abbr: 'Fg', color: '#f2a6d2' } },
 ]
 
 const motion = [

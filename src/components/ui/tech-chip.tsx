@@ -1,11 +1,12 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { ComponentProps, CSSProperties } from 'react'
 
+import { hasTechGlyph, TechGlyph } from '@/components/tech-glyph'
 import { cn } from '@/lib/utils'
 
 /**
- * Ícone quadrado com a sigla da tecnologia ("Re", "TS").
- * Uma única cor (cadastrada no CMS) gera fundo e texto para os dois temas.
+ * Ícone quadrado da tecnologia: o logo escolhido no painel ou, sem logo, a sigla ("Re", "TS").
+ * Uma única cor (cadastrada no CMS) gera fundo e traço para os dois temas.
  */
 const techIconVariants = cva(
   'flex size-[26px] flex-none items-center justify-center rounded-md font-mono text-[10px] font-medium',
@@ -20,26 +21,46 @@ const techIconVariants = cva(
         outline: 'rounded-full border-[1.5px] border-foreground font-sans text-xs font-extrabold',
         neutral: 'bg-muted text-foreground',
       },
+      glyph: { true: '', false: '' },
     },
+    compoundVariants: [
+      // Logos que já são um quadrado/círculo (TS, JS, Next.js) aparecem inteiros, sem caixa.
+      { glyph: true, appearance: 'solid', className: 'bg-transparent text-(--tech)' },
+      { glyph: true, appearance: 'outline', className: 'border-0 text-foreground' },
+    ],
     defaultVariants: {
       appearance: 'tint',
+      glyph: false,
     },
   },
 )
 
 type TechIconProps = ComponentProps<'span'> &
-  VariantProps<typeof techIconVariants> & {
-    abbr: string
+  Omit<VariantProps<typeof techIconVariants>, 'glyph'> & {
+    /** Logo escolhido no painel (ver lib/tech-icon-options). */
+    glyph?: string | null
+    abbr?: string | null
     color?: string
     /** Cor do texto no modo solid (ex.: preto sobre o amarelo do JS). */
     onColor?: string
   }
 
-function TechIcon({ abbr, color, onColor, appearance, className, style, ...props }: TechIconProps) {
+function TechIcon({
+  glyph,
+  abbr,
+  color,
+  onColor,
+  appearance,
+  className,
+  style,
+  ...props
+}: TechIconProps) {
+  const withGlyph = hasTechGlyph(glyph)
+  const fullSize = withGlyph && (appearance === 'solid' || appearance === 'outline')
   return (
     <span
       aria-hidden="true"
-      className={cn(techIconVariants({ appearance }), className)}
+      className={cn(techIconVariants({ appearance, glyph: withGlyph }), className)}
       style={
         {
           '--tech': color ?? 'var(--muted-foreground)',
@@ -49,7 +70,11 @@ function TechIcon({ abbr, color, onColor, appearance, className, style, ...props
       }
       {...props}
     >
-      {abbr}
+      {withGlyph ? (
+        <TechGlyph name={glyph} className={fullSize ? 'size-[22px]' : 'size-[15px]'} />
+      ) : (
+        abbr
+      )}
     </span>
   )
 }
