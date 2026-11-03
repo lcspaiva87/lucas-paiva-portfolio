@@ -6,6 +6,8 @@ import { getPayload } from 'payload'
 
 import type { Experience, Media, Profile, Project, Technology } from '@/payload-types'
 
+import { profile as defaultProfile } from '@/seed/content'
+
 import { CACHE_TAGS } from './cache-tags'
 
 // O conteúdo só muda quando algo é publicado no painel; os hooks invalidam as tags.
@@ -17,7 +19,12 @@ export async function getProfile(): Promise<Profile> {
   'use cache'
   forever()
   cacheTag(CACHE_TAGS.profile)
-  return (await payload()).findGlobal({ slug: 'profile', depth: 1 })
+  const profile = await (await payload()).findGlobal({ slug: 'profile', depth: 1 })
+  // Banco recém-criado (primeiro deploy) ainda não tem perfil: usa os textos padrão do seed.
+  const filled = Object.fromEntries(
+    Object.entries(profile).filter(([, value]) => value !== null && value !== undefined),
+  )
+  return { ...defaultProfile, ...filled } as unknown as Profile
 }
 
 export async function getTechnologies(): Promise<Technology[]> {

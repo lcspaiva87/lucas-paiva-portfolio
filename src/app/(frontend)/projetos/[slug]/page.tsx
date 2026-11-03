@@ -24,7 +24,9 @@ export const instant = false
 
 export async function generateStaticParams() {
   const projects = await getProjects()
-  return projects.filter(hasCaseStudy).map((p) => ({ slug: p.slug }))
+  const slugs = projects.filter(hasCaseStudy).map((p) => ({ slug: p.slug }))
+  // Cache Components exige ao menos um item; sem cases publicados, o reserva vira 404.
+  return slugs.length > 0 ? slugs : [{ slug: 'em-breve' }]
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
