@@ -229,7 +229,8 @@ export function StackSection({
                     className="flex items-center gap-3.5 border-t border-border py-[11px] text-base font-semibold transition-[translate,color] duration-350 ease-out-expo hover:translate-x-1.5 hover:text-brand-ink"
                   >
                     <TechIcon
-                      abbr={tech.abbr}
+                      glyph={tech.icon}
+                      abbr={tech.abbr || tech.name.slice(0, 2)}
                       appearance={tech.appearance}
                       color={tech.color ?? undefined}
                       onColor={tech.onColor ?? undefined}

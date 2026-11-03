@@ -20,7 +20,8 @@ export function Tech({
       name={tech.name}
       className={className}
       icon={{
-        abbr: tech.abbr,
+        glyph: tech.icon,
+        abbr: tech.abbr || tech.name.slice(0, 2),
         appearance: tech.appearance,
         color: tech.color ?? undefined,
         onColor: tech.onColor ?? undefined,
