@@ -29,11 +29,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const project = await getProjectBySlug(slug)
   if (!project) return {}
-  const image = media(project.seo?.image) ?? media(project.cover)
+  // Imagem cadastrada no SEO do projeto; sem ela, vale a gerada em opengraph-image.tsx.
+  const image = media(project.seo?.image)
+  const title = project.seo?.title || `${project.title} — case study`
+  const description = project.seo?.description || project.tagline
+  const url = `/projetos/${project.slug}`
   return {
-    title: project.seo?.title || `${project.title} — case study`,
-    description: project.seo?.description || project.tagline,
-    openGraph: image?.url ? { images: [{ url: image.url, alt: image.alt }] } : undefined,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title,
+      description,
+      ...(image?.url && { images: [{ url: image.url, alt: image.alt }] }),
+    },
+    twitter: { title, description },
   }
 }
 
