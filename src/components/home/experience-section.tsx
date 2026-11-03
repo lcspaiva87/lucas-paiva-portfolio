@@ -1,8 +1,10 @@
-import { TechChip } from '@/components/ui/tech-chip'
-import { Highlight } from '@/components/ui/highlight'
+import { GrowLine } from '@/components/motion/grow-line'
+import { RevealGroup, RevealItem } from '@/components/motion/reveal'
+import { SplitHeading } from '@/components/motion/split-heading'
 import { SectionLabel } from '@/components/ui/section-label'
+import { TechChip } from '@/components/ui/tech-chip'
 import { populated } from '@/lib/cms'
-import { formatMonth, formatPeriod, plainText, yearOf } from '@/lib/format'
+import { formatMonth, formatPeriod, yearOf } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Experience, Technology } from '@/payload-types'
 
@@ -46,7 +48,11 @@ function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
   const results = exp.results ?? []
 
   return (
-    <li className="group/item relative isolate flex flex-wrap gap-x-12 gap-y-6 border-t border-border py-10">
+    <RevealItem
+      as="li"
+      from="left"
+      className="group/item relative isolate flex flex-wrap gap-x-12 gap-y-6 border-t border-border py-10"
+    >
       <span
         aria-hidden="true"
         className={cn(
@@ -56,7 +62,11 @@ function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
             : 'border-2 border-border-strong bg-background',
         )}
         style={{ left: `calc(${RAIL} - ${INDENT} - 8px)` }}
-      />
+      >
+        {current && (
+          <span className="absolute -inset-1.5 rounded-full border-2 border-primary motion-safe:animate-ring" />
+        )}
+      </span>
       {year && (
         <span
           aria-hidden="true"
@@ -99,7 +109,7 @@ function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
           </ul>
         )}
       </div>
-    </li>
+    </RevealItem>
   )
 }
 
@@ -119,13 +129,12 @@ export function ExperienceSection({
     >
       <div className="flex flex-col gap-3.5">
         <SectionLabel>Experiência</SectionLabel>
-        <h2
+        <SplitHeading
           id="exp-titulo"
-          aria-label={plainText(heading)}
+          text={heading}
+          by="chars"
           className="m-0 text-[clamp(2.375rem,4.4vw,3.75rem)] leading-none font-extrabold tracking-[-0.045em]"
-        >
-          <Highlight text={heading} />
-        </h2>
+        />
       </div>
 
       <div className="relative">
@@ -134,10 +143,12 @@ export function ExperienceSection({
           className="absolute inset-y-0 w-0.5 bg-border"
           style={{ left: RAIL }}
         />
+        <GrowLine style={{ left: RAIL }} />
+        {/* Pulso de luz descendo pela linha */}
         <div
           aria-hidden="true"
-          className="absolute top-0 h-1/2 w-0.5 bg-linear-to-b from-primary to-transparent"
-          style={{ left: RAIL }}
+          className="pointer-events-none absolute inset-y-0 w-1 rounded bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_180px,var(--foreground)_240px,transparent_300px,transparent_320px)] opacity-60 motion-safe:animate-flow motion-reduce:hidden"
+          style={{ left: `calc(${RAIL} - 1px)` }}
         />
         <span
           aria-hidden="true"
@@ -146,11 +157,16 @@ export function ExperienceSection({
         >
           Hoje
         </span>
-        <ol className="m-0 flex list-none flex-col p-0" style={{ paddingLeft: INDENT }}>
+        <RevealGroup
+          as="ol"
+          stagger={0.25}
+          className="m-0 flex list-none flex-col p-0"
+          style={{ paddingLeft: INDENT }}
+        >
           {experiences.map((exp, i) => (
             <TimelineItem key={exp.id} exp={exp} current={i === 0 && !exp.endDate} />
           ))}
-        </ol>
+        </RevealGroup>
       </div>
     </section>
   )

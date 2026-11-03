@@ -1,10 +1,10 @@
 import { ArrowUpRight, Mail } from 'lucide-react'
 
+import { Reveal } from '@/components/motion/reveal'
+import { SplitHeading } from '@/components/motion/split-heading'
 import { Badge } from '@/components/ui/badge'
 import { Button, ButtonArrow } from '@/components/ui/button'
-import { Highlight } from '@/components/ui/highlight'
 import { SectionLabel } from '@/components/ui/section-label'
-import { plainText } from '@/lib/format'
 import type { Profile } from '@/payload-types'
 
 export function ContactSection({ profile }: { profile: Profile }) {
@@ -14,7 +14,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
       aria-labelledby="contato-titulo"
       className="container-page scroll-mt-8 pt-28 lg:pt-32"
     >
-      <div className="relative flex flex-wrap items-end justify-between gap-8 overflow-hidden rounded-[18px] border border-brand-soft bg-card p-6 sm:p-12">
+      <Reveal className="relative flex flex-wrap items-end justify-between gap-8 overflow-hidden rounded-[18px] border border-brand-soft bg-card p-6 sm:p-12">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-1/2 -right-1/4 size-[640px] bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--primary)_18%,transparent),transparent)]"
@@ -26,13 +26,11 @@ export function ContactSection({ profile }: { profile: Profile }) {
               <Badge variant="success">{profile.availabilityText || 'Disponível'}</Badge>
             )}
           </div>
-          <h2
+          <SplitHeading
             id="contato-titulo"
-            aria-label={plainText(profile.contactHeading)}
+            text={profile.contactHeading}
             className="m-0 text-[clamp(2rem,4.4vw,3.75rem)] leading-none font-extrabold tracking-[-0.045em]"
-          >
-            <Highlight text={profile.contactHeading} />
-          </h2>
+          />
           {profile.email && (
             <a
               href={`mailto:${profile.email}`}
@@ -53,7 +51,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
             </a>
           </Button>
         )}
-      </div>
+      </Reveal>
     </section>
   )
 }

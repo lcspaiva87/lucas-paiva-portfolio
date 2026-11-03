@@ -2,10 +2,10 @@ import { ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 
 import { Glyph } from '@/components/glyph'
-import { Highlight } from '@/components/ui/highlight'
+import { Reveal } from '@/components/motion/reveal'
+import { SplitHeading } from '@/components/motion/split-heading'
 import { SectionLabel } from '@/components/ui/section-label'
 import { media } from '@/lib/cms'
-import { plainText } from '@/lib/format'
 import type { Profile } from '@/payload-types'
 
 export function About({ profile }: { profile: Profile }) {
@@ -19,16 +19,14 @@ export function About({ profile }: { profile: Profile }) {
     >
       <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-4">
         <SectionLabel>Sobre mim</SectionLabel>
-        <h2
+        <SplitHeading
           id="sobre-titulo"
-          aria-label={plainText(profile.aboutHeading)}
+          text={profile.aboutHeading}
           className="m-0 text-[clamp(2.375rem,4.4vw,3.75rem)] leading-none font-extrabold tracking-[-0.045em]"
-        >
-          <Highlight text={profile.aboutHeading} />
-        </h2>
+        />
       </div>
 
-      <div className="flex min-w-0 flex-[1.3_1_380px] flex-col gap-7">
+      <Reveal delay={0.1} className="flex min-w-0 flex-[1.3_1_380px] flex-col gap-7">
         <p className="m-0 text-base leading-[1.65] text-foreground-soft sm:text-[17px]">
           {profile.aboutBody}
         </p>
@@ -54,9 +52,12 @@ export function About({ profile }: { profile: Profile }) {
             ))}
           </ul>
         )}
-      </div>
+      </Reveal>
 
-      <div className="relative flex aspect-[16/7] min-w-0 flex-[1.2_1_360px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-card">
+      <Reveal
+        delay={0.2}
+        className="relative flex aspect-[16/7] min-w-0 flex-[1.2_1_360px] items-center justify-center overflow-hidden rounded-2xl border border-border bg-card"
+      >
         {photo ? (
           <Image
             src={photo.url!}
@@ -78,7 +79,7 @@ export function About({ profile }: { profile: Profile }) {
             </span>
           </>
         )}
-      </div>
+      </Reveal>
     </section>
   )
 }

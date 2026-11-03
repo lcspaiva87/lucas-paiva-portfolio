@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
+import { RevealGroup } from '@/components/motion/reveal'
+import { SplitHeading } from '@/components/motion/split-heading'
 import { ProjectCard } from '@/components/projects/project-card'
-import { Highlight } from '@/components/ui/highlight'
 import { SectionLabel } from '@/components/ui/section-label'
-import { plainText } from '@/lib/format'
 import type { Project } from '@/payload-types'
 
 export function ProjectsSection({ heading, projects }: { heading: string; projects: Project[] }) {
@@ -16,13 +16,11 @@ export function ProjectsSection({ heading, projects }: { heading: string; projec
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-3.5">
           <SectionLabel>Projetos</SectionLabel>
-          <h2
+          <SplitHeading
             id="proj-titulo"
-            aria-label={plainText(heading)}
+            text={heading}
             className="m-0 text-[clamp(2.375rem,4.4vw,3.75rem)] leading-none font-extrabold tracking-[-0.045em]"
-          >
-            <Highlight text={heading} />
-          </h2>
+          />
         </div>
         <Link
           href="/projetos"
@@ -32,13 +30,17 @@ export function ProjectsSection({ heading, projects }: { heading: string; projec
         </Link>
       </div>
 
-      <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-5 p-0">
+      <RevealGroup
+        as="ul"
+        stagger={0.14}
+        className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-5 p-0 perspective-[1600px]"
+      >
         {projects.map((project) => (
           <li key={project.id} className="contents">
             <ProjectCard project={project} />
           </li>
         ))}
-      </ul>
+      </RevealGroup>
     </section>
   )
 }

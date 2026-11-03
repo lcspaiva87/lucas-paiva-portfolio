@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { CSSProperties } from 'react'
 
 import { Glyph } from '@/components/glyph'
+import { TiltCard } from '@/components/motion/tilt-card'
 import { TechChip } from '@/components/ui/tech-chip'
 import { hasCaseStudy, media, populated } from '@/lib/cms'
 import { cn } from '@/lib/utils'
@@ -83,16 +84,15 @@ export function ProjectCard({
   )
 
   return (
-    <article
+    <TiltCard
       className={cn(
         'group/card relative flex min-h-[340px] overflow-hidden rounded-[18px] border border-border bg-card',
         'transition-[translate,border-color,box-shadow] duration-600 ease-out-expo',
-        linked &&
-          'hover:-translate-y-2 hover:border-primary hover:shadow-[0_40px_80px_-32px_color-mix(in_oklab,var(--primary)_35%,transparent)] focus-within:border-primary',
+        'hover:-translate-y-2 hover:border-primary hover:shadow-[0_40px_80px_-32px_color-mix(in_oklab,var(--primary)_35%,transparent)] focus-within:border-primary',
       )}
       style={{ '--accent': project.accentColor || 'var(--primary)' } as CSSProperties}
     >
       {body}
-    </article>
+    </TiltCard>
   )
 }
