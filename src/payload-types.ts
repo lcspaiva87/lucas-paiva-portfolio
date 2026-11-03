@@ -417,9 +417,79 @@ export interface Technology {
   _order?: string | null;
   name: string;
   /**
-   * Ex.: Re, TS, ▲
+   * Logo oficial ou ícone genérico.
    */
-  abbr: string;
+  icon?:
+    | (
+        | 'react'
+        | 'nextdotjs'
+        | 'typescript'
+        | 'javascript'
+        | 'tailwindcss'
+        | 'shadcnui'
+        | 'reactquery'
+        | 'tanstack'
+        | 'redux'
+        | 'reactrouter'
+        | 'vite'
+        | 'sass'
+        | 'framer'
+        | 'threedotjs'
+        | 'storybook'
+        | 'figma'
+        | 'zod'
+        | 'nodedotjs'
+        | 'nestjs'
+        | 'graphql'
+        | 'python'
+        | 'payloadcms'
+        | 'stripe'
+        | 'anthropic'
+        | 'claude'
+        | 'expo'
+        | 'googleplay'
+        | 'appstore'
+        | 'apple'
+        | 'android'
+        | 'ios'
+        | 'swift'
+        | 'kotlin'
+        | 'flutter'
+        | 'postgresql'
+        | 'mysql'
+        | 'mongodb'
+        | 'redis'
+        | 'prisma'
+        | 'supabase'
+        | 'firebase'
+        | 'electron'
+        | 'git'
+        | 'github'
+        | 'vercel'
+        | 'docker'
+        | 'nginx'
+        | 'linux'
+        | 'pnpm'
+        | 'npm'
+        | 'turborepo'
+        | 'jest'
+        | 'vitest'
+        | 'cypress'
+        | 'google'
+        | 'generic-ai'
+        | 'generic-api'
+        | 'generic-cloud'
+        | 'generic-database'
+        | 'generic-auth'
+        | 'generic-test'
+        | 'generic-state'
+        | 'generic-code'
+      )
+    | null;
+  /**
+   * Usada só se não houver logo. Ex.: Re, TS.
+   */
+  abbr?: string | null;
   group: 'frontend' | 'backend' | 'mobile' | 'data' | 'tools' | 'other';
   appearance: 'tint' | 'solid' | 'outline' | 'neutral';
   /**
@@ -718,6 +788,7 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface TechnologiesSelect<T extends boolean = true> {
   _order?: T;
   name?: T;
+  icon?: T;
   abbr?: T;
   group?: T;
   appearance?: T;
