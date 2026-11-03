@@ -220,6 +220,26 @@
     }
   }
 
+  --animate-orbit-spin: orbit-spin 48s linear infinite;
+  --animate-sonar: sonar 4.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+
+  @keyframes orbit-spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes sonar {
+    0% {
+      opacity: 0.55;
+      scale: 1;
+    }
+    100% {
+      opacity: 0;
+      scale: 1.4;
+    }
+  }
+
   @keyframes dots {
     to {
       transform: translateX(10px);
