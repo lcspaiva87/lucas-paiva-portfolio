@@ -116,10 +116,10 @@ Uploads com alt text obrigatório e tamanhos gerados (thumb, card, full).
 - [x] Página `/styleguide` (noindex) para revisar o design system
 
 ### Fase 2 — CMS
-- [ ] Coleções `projects`, `technologies`, `experiences`, `media` e global `profile`
-- [ ] Login do admin (usuário único)
-- [ ] Hooks de revalidação (`revalidateTag`) ao publicar
-- [ ] Seed com o conteúdo atual: CalorieUp, LuvePet, Scalar Workspace, Adapta, stack completa
+- [x] Coleções `projects`, `technologies`, `experiences`, `media` e global `profile` (painel em português)
+- [x] Login do admin (usuário único) — falta criar a conta em `/admin`
+- [x] Hooks de revalidação (`revalidateTag(tag, { expire: 0 })`) ao publicar
+- [x] Seed com o conteúdo atual: CalorieUp, LuvePet, Scalar Workspace, Adapta, stack completa (`pnpm seed`, pode rodar de novo sem duplicar)
 
 ### Fase 3 — Páginas
 - [ ] Layout: header com nav + toggle de tema, footer
