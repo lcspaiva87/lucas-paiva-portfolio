@@ -59,264 +59,933 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji'
+  | 'Pacific/Fiji';
 
 export interface Config {
   auth: {
-    users: UserAuthOperations
-  }
-  blocks: {}
+    users: UserAuthOperations;
+  };
+  blocks: {};
   collections: {
-    users: User
-    media: Media
-    'payload-kv': PayloadKv
-    'payload-locked-documents': PayloadLockedDocument
-    'payload-preferences': PayloadPreference
-    'payload-migrations': PayloadMigration
-  }
-  collectionsJoins: {}
+    projects: Project;
+    technologies: Technology;
+    experiences: Experience;
+    media: Media;
+    users: User;
+    'payload-kv': PayloadKv;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
+  };
+  collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>
-    media: MediaSelect<false> | MediaSelect<true>
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
-    'payload-locked-documents':
-      PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>
-  }
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    technologies: TechnologiesSelect<false> | TechnologiesSelect<true>;
+    experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+  };
   db: {
-    defaultIDType: number
-  }
-  fallbackLocale: null
-  globals: {}
-  globalsSelect: {}
-  locale: null
+    defaultIDType: number;
+  };
+  fallbackLocale: null;
+  globals: {
+    profile: Profile;
+  };
+  globalsSelect: {
+    profile: ProfileSelect<false> | ProfileSelect<true>;
+  };
+  locale: null;
   widgets: {
-    collections: CollectionsWidget
-  }
-  user: User
+    collections: CollectionsWidget;
+  };
+  user: User;
   jobs: {
-    tasks: unknown
-    workflows: unknown
-  }
+    tasks: unknown;
+    workflows: unknown;
+  };
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   login: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   registerFirstUser: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   unlock: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
 }
 /**
+ * Arraste para mudar a ordem em que aparecem no site.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "projects".
  */
-export interface User {
-  id: number
-  updatedAt: string
-  createdAt: string
-  email: string
-  resetPasswordToken?: string | null
-  resetPasswordExpiration?: string | null
-  salt?: string | null
-  hash?: string | null
-  resetPasswordRequestedAt?: string | null
-  loginAttempts?: number | null
-  lockUntil?: string | null
-  sessions?:
+export interface Project {
+  id: number;
+  _order?: string | null;
+  title: string;
+  /**
+   * Gerado a partir do título se ficar em branco.
+   */
+  slug: string;
+  category: 'mobile' | 'web' | 'saas' | 'desktop';
+  stage: 'production' | 'development' | 'discontinued';
+  featured?: boolean | null;
+  tagline: string;
+  /**
+   * Quadrado laranja do card.
+   */
+  glyph?:
+    | (
+        | 'heart'
+        | 'flame'
+        | 'layers'
+        | 'camera'
+        | 'sparkles'
+        | 'lock'
+        | 'crown'
+        | 'smartphone'
+        | 'globe'
+        | 'bot'
+        | 'calendar-clock'
+        | 'chart-line'
+        | 'shield-check'
+        | 'zap'
+        | 'users'
+        | 'wallet'
+        | 'paw-print'
+        | 'bell'
+        | 'code'
+      )
+    | null;
+  /**
+   * Opcional. Padrão: laranja da marca.
+   */
+  accentColor?: string | null;
+  /**
+   * Screenshot ou mockup. Sem imagem, o card usa uma ilustração.
+   */
+  cover?: (number | null) | Media;
+  technologies?: (number | Technology)[] | null;
+  /**
+   * Parágrafo de abertura. A primeira frase fica em destaque.
+   */
+  summary?: string | null;
+  role?: string | null;
+  platform?: string | null;
+  periodStart?: string | null;
+  /**
+   * Em branco = em andamento.
+   */
+  periodEnd?: string | null;
+  links?:
     | {
-        id: string
-        createdAt?: string | null
-        expiresAt: string
+        kind: 'play-store' | 'app-store' | 'website' | 'repository' | 'other';
+        label?: string | null;
+        url: string;
+        id?: string | null;
       }[]
-    | null
-  password?: string | null
-  collection: 'users'
+    | null;
+  /**
+   * Até 3 screenshots; a do meio ganha destaque.
+   */
+  heroImages?: (number | Media)[] | null;
+  layout?:
+    | (
+        | {
+            columns: {
+              /**
+               * Ex.: "O problema". O número é adicionado automaticamente.
+               */
+              label?: string | null;
+              heading?: string | null;
+              body?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textColumns';
+          }
+        | {
+            /**
+             * Ex.: "O problema". O número é adicionado automaticamente.
+             */
+            label?: string | null;
+            items?:
+              | {
+                  icon?:
+                    | (
+                        | 'heart'
+                        | 'flame'
+                        | 'layers'
+                        | 'camera'
+                        | 'sparkles'
+                        | 'lock'
+                        | 'crown'
+                        | 'smartphone'
+                        | 'globe'
+                        | 'bot'
+                        | 'calendar-clock'
+                        | 'chart-line'
+                        | 'shield-check'
+                        | 'zap'
+                        | 'users'
+                        | 'wallet'
+                        | 'paw-print'
+                        | 'bell'
+                        | 'code'
+                      )
+                    | null;
+                  title: string;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'featureGrid';
+          }
+        | {
+            /**
+             * Ex.: "O problema". O número é adicionado automaticamente.
+             */
+            label?: string | null;
+            heading?: string | null;
+            items?:
+              | {
+                  title: string;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'challenges';
+          }
+        | {
+            /**
+             * Ex.: "O problema". O número é adicionado automaticamente.
+             */
+            label?: string | null;
+            layout?: ('phones' | 'wide') | null;
+            images?:
+              | {
+                  image: number | Media;
+                  caption?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gallery';
+          }
+        | {
+            /**
+             * Ex.: "O problema". O número é adicionado automaticamente.
+             */
+            label?: string | null;
+            items?:
+              | {
+                  value: string;
+                  description: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'metrics';
+          }
+        | {
+            /**
+             * Ex.: "O problema". O número é adicionado automaticamente.
+             */
+            label?: string | null;
+            heading?: string | null;
+            content: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'richText';
+          }
+      )[]
+    | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: number
-  alt: string
-  updatedAt: string
-  createdAt: string
-  url?: string | null
-  thumbnailURL?: string | null
-  filename?: string | null
-  mimeType?: string | null
-  filesize?: number | null
-  width?: number | null
-  height?: number | null
-  focalX?: number | null
-  focalY?: number | null
+  id: number;
+  /**
+   * Descreva a imagem para leitores de tela.
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    full?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * Alimenta a seção Stack, os chips do hero e as tags dos projetos.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "technologies".
+ */
+export interface Technology {
+  id: number;
+  _order?: string | null;
+  name: string;
+  /**
+   * Ex.: Re, TS, ▲
+   */
+  abbr: string;
+  group: 'frontend' | 'backend' | 'mobile' | 'data' | 'tools' | 'other';
+  appearance: 'tint' | 'solid' | 'outline' | 'neutral';
+  /**
+   * Uma cor só; o site gera as variações dos temas claro e escuro.
+   */
+  color?: string | null;
+  /**
+   * Texto sobre o fundo sólido.
+   */
+  onColor?: string | null;
+  showInStack?: boolean | null;
+  showInHero?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Linha do tempo da Home, ordenada da mais recente para a mais antiga.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences".
+ */
+export interface Experience {
+  id: number;
+  kind: 'work' | 'education';
+  organization?: string | null;
+  title: string;
+  startDate?: string | null;
+  /**
+   * Em branco = atual / em andamento.
+   */
+  endDate?: string | null;
+  summary?: string | null;
+  responsibilities?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * O que mudou, para quem e como foi medido.
+   */
+  results?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  technologies?: (number | Technology)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number
-  key: string
+  id: number;
+  key: string;
   data:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number
+  id: number;
   document?:
     | ({
-        relationTo: 'users'
-        value: number | User
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
-        relationTo: 'media'
-        value: number | Media
+        relationTo: 'technologies';
+        value: number | Technology;
       } | null)
-  globalSlug?: string | null
+    | ({
+        relationTo: 'experiences';
+        value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null);
+  globalSlug?: string | null;
   user: {
-    relationTo: 'users'
-    value: number | User
-  }
-  updatedAt: string
-  createdAt: string
+    relationTo: 'users';
+    value: number | User;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number
+  id: number;
   user: {
-    relationTo: 'users'
-    value: number | User
-  }
-  key?: string | null
+    relationTo: 'users';
+    value: number | User;
+  };
+  key?: string | null;
   value?:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
-  updatedAt: string
-  createdAt: string
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number
-  name?: string | null
-  batch?: number | null
-  updatedAt: string
-  createdAt: string
+  id: number;
+  name?: string | null;
+  batch?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "projects_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  updatedAt?: T
-  createdAt?: T
-  email?: T
-  resetPasswordToken?: T
-  resetPasswordExpiration?: T
-  salt?: T
-  hash?: T
-  resetPasswordRequestedAt?: T
-  loginAttempts?: T
-  lockUntil?: T
-  sessions?:
+export interface ProjectsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  slug?: T;
+  category?: T;
+  stage?: T;
+  featured?: T;
+  tagline?: T;
+  glyph?: T;
+  accentColor?: T;
+  cover?: T;
+  technologies?: T;
+  summary?: T;
+  role?: T;
+  platform?: T;
+  periodStart?: T;
+  periodEnd?: T;
+  links?:
     | T
     | {
-        id?: T
-        createdAt?: T
-        expiresAt?: T
-      }
+        kind?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  heroImages?: T;
+  layout?:
+    | T
+    | {
+        textColumns?:
+          | T
+          | {
+              columns?:
+                | T
+                | {
+                    label?: T;
+                    heading?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        featureGrid?:
+          | T
+          | {
+              label?: T;
+              items?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        challenges?:
+          | T
+          | {
+              label?: T;
+              heading?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              label?: T;
+              layout?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        metrics?:
+          | T
+          | {
+              label?: T;
+              items?:
+                | T
+                | {
+                    value?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        richText?:
+          | T
+          | {
+              label?: T;
+              heading?: T;
+              content?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "technologies_select".
+ */
+export interface TechnologiesSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  abbr?: T;
+  group?: T;
+  appearance?: T;
+  color?: T;
+  onColor?: T;
+  showInStack?: T;
+  showInHero?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences_select".
+ */
+export interface ExperiencesSelect<T extends boolean = true> {
+  kind?: T;
+  organization?: T;
+  title?: T;
+  startDate?: T;
+  endDate?: T;
+  summary?: T;
+  responsibilities?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  results?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  technologies?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  alt?: T
-  updatedAt?: T
-  createdAt?: T
-  url?: T
-  thumbnailURL?: T
-  filename?: T
-  mimeType?: T
-  filesize?: T
-  width?: T
-  height?: T
-  focalX?: T
-  focalY?: T
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumb?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        full?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T
-  data?: T
+  key?: T;
+  data?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T
-  globalSlug?: T
-  user?: T
-  updatedAt?: T
-  createdAt?: T
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T
-  key?: T
-  value?: T
-  updatedAt?: T
-  createdAt?: T
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T
-  batch?: T
-  updatedAt?: T
-  createdAt?: T
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile".
+ */
+export interface Profile {
+  id: number;
+  name: string;
+  role: string;
+  /**
+   * Aparece como "> texto".
+   */
+  headline: string;
+  intro: string;
+  location?: string | null;
+  stats?:
+    | {
+        value: string;
+        label: string;
+        accent?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  resume?: (number | null) | Media;
+  /**
+   * Coloque entre *asteriscos* a palavra que fica em laranja.
+   */
+  aboutHeading: string;
+  aboutBody: string;
+  facts?:
+    | {
+        icon: 'map-pin' | 'graduation-cap' | 'laptop' | 'globe';
+        text: string;
+        detail?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  photo?: (number | null) | Media;
+  /**
+   * Coloque entre *asteriscos* a palavra que fica em laranja.
+   */
+  projectsHeading: string;
+  /**
+   * Coloque entre *asteriscos* a palavra que fica em laranja.
+   */
+  experienceHeading: string;
+  /**
+   * Coloque entre *asteriscos* a palavra que fica em laranja.
+   */
+  stackHeading: string;
+  stackIntro?: string | null;
+  /**
+   * Coloque entre *asteriscos* a palavra que fica em laranja.
+   */
+  contactHeading: string;
+  email?: string | null;
+  available?: boolean | null;
+  availabilityText?: string | null;
+  socials?:
+    | {
+        platform: 'github' | 'linkedin' | 'youtube' | 'instagram' | 'x';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile_select".
+ */
+export interface ProfileSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  headline?: T;
+  intro?: T;
+  location?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        accent?: T;
+        id?: T;
+      };
+  resume?: T;
+  aboutHeading?: T;
+  aboutBody?: T;
+  facts?:
+    | T
+    | {
+        icon?: T;
+        text?: T;
+        detail?: T;
+        id?: T;
+      };
+  photo?: T;
+  projectsHeading?: T;
+  experienceHeading?: T;
+  stackHeading?: T;
+  stackIntro?: T;
+  contactHeading?: T;
+  email?: T;
+  available?: T;
+  availabilityText?: T;
+  socials?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -324,17 +993,18 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface CollectionsWidget {
   data?: {
-    [k: string]: unknown
-  }
-  width: 'full'
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown
+  [k: string]: unknown;
 }
+
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
