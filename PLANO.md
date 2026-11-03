@@ -131,7 +131,7 @@ Uploads com alt text obrigatório e tamanhos gerados (thumb, card, full).
 
 ### Fase 4 — Movimento e polimento
 - [x] Animações de entrada (hero em CSS; seções com `motion` ao entrar na tela), botões magnéticos, cards com tilt de até 4°
-- [x] Globo animado em SVG (pontos correndo, meridianos girando, órbita inclinando com o scroll). R3F descartado por enquanto: o SVG segue o design sem somar ~150 KB de three.js
+- [x] Terra 3D em WebGL com `cobe` (~6 KB, carregada depois da página): continentes em pontos, Fortaleza em destaque, arcos para o mundo, arraste com inércia e scroll; órbita, anéis e sonar animados em volta. O globo SVG fica como reserva (antes de carregar, sem WebGL e com movimento reduzido). R3F descartado: somaria ~150 KB de three.js
 - [x] `prefers-reduced-motion` em tudo (CSS `motion-safe`, `MotionConfig reducedMotion="user"`, SVG pausado)
 - [ ] Acessibilidade (contraste, foco, navegação por teclado) — revisão dedicada
 
