@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 
 import { SiteFooter } from '@/components/site/site-footer'
 import { SiteHeader } from '@/components/site/site-header'
+import { MotionProvider } from '@/components/motion/motion-provider'
 import { ThemeProvider } from '@/components/theme/theme-provider'
 
 import './globals.css'
@@ -41,19 +42,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <body>
         <ThemeProvider>
-          <a
-            href="#conteudo"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-primary-foreground"
-          >
-            Pular para o conteúdo
-          </a>
-          <div id="topo" className="flex min-h-dvh flex-col overflow-x-clip">
-            <SiteHeader />
-            <main id="conteudo" className="flex-1">
-              {children}
-            </main>
-            <SiteFooter />
-          </div>
+          <MotionProvider>
+            <a
+              href="#conteudo"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-primary-foreground"
+            >
+              Pular para o conteúdo
+            </a>
+            <div id="topo" className="flex min-h-dvh flex-col overflow-x-clip">
+              <SiteHeader />
+              <main id="conteudo" className="flex-1">
+                {children}
+              </main>
+              <SiteFooter />
+            </div>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>
