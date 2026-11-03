@@ -130,10 +130,10 @@ Uploads com alt text obrigatório e tamanhos gerados (thumb, card, full).
 - [x] Cache Components (`'use cache'` + `cacheTag`) com revalidação ao publicar, testada em `next start`
 
 ### Fase 4 — Movimento e polimento
-- [ ] Animações de entrada, hover magnético, cards com tilt
-- [ ] Globo 3D com rotação no scroll
-- [ ] `prefers-reduced-motion` em tudo
-- [ ] Acessibilidade (contraste, foco, navegação por teclado)
+- [x] Animações de entrada (hero em CSS; seções com `motion` ao entrar na tela), botões magnéticos, cards com tilt de até 4°
+- [x] Globo animado em SVG (pontos correndo, meridianos girando, órbita inclinando com o scroll). R3F descartado por enquanto: o SVG segue o design sem somar ~150 KB de three.js
+- [x] `prefers-reduced-motion` em tudo (CSS `motion-safe`, `MotionConfig reducedMotion="user"`, SVG pausado)
+- [ ] Acessibilidade (contraste, foco, navegação por teclado) — revisão dedicada
 
 ### Fase 5 — SEO e lançamento
 - [ ] `generateMetadata` por página, OG image dinâmica (`next/og`), `sitemap.xml`, `robots.txt`, JSON-LD (Person + CreativeWork)
