@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import type { ReactNode } from 'react'
 
+import { BlockDevtoolsShortcuts } from '@/components/site/block-devtools-shortcuts'
 import { SiteFooter } from '@/components/site/site-footer'
 import { SiteHeader } from '@/components/site/site-header'
 import { MotionProvider } from '@/components/motion/motion-provider'
@@ -88,6 +89,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             }}
           />
         </noscript>
+        <BlockDevtoolsShortcuts />
         <LocaleProvider locale={locale}>
           <ThemeProvider>
             <MotionProvider>
