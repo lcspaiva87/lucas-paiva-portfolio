@@ -2,6 +2,8 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { DEFAULT_LOCALE, isLocale, type Locale, LOCALE_COOKIE } from '@/i18n/config'
 
+const FIRST_USER_ROUTE = '/admin/create-first-user'
+
 /** Primeiro idioma suportado na lista do navegador ("en-US,en;q=0.9,pt;q=0.8" → en). */
 function browserLocale(header: string | null): Locale {
   if (!header) return DEFAULT_LOCALE
@@ -25,6 +27,13 @@ function browserLocale(header: string | null): Locale {
  */
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
+
+  // A tela de "primeiro usuário" do Payload não existe neste site: o cadastro é fechado e a
+  // conta de admin é criada no terminal. Responde com a página 404 do site.
+  if (pathname.replace(/\/+$/, '') === FIRST_USER_ROUTE) {
+    return NextResponse.rewrite(new URL(`/${DEFAULT_LOCALE}/__not-found`, request.url))
+  }
+
   const first = pathname.split('/')[1]
 
   // As imagens de compartilhamento são geradas com o caminho interno (/pt/.../opengraph-image).
@@ -47,6 +56,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Painel, API, arquivos estáticos e ícones ficam de fora.
-  matcher: ['/((?!admin|api|_next|_vercel|icon|apple-icon|.*\\..*).*)'],
+  // Painel, API, arquivos estáticos e ícones ficam de fora, menos a rota de primeiro usuário.
+  matcher: [
+    '/((?!admin|api|_next|_vercel|icon|apple-icon|.*\\..*).*)',
+    '/admin/create-first-user/:path*',
+  ],
 }
