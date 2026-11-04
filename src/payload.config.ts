@@ -29,6 +29,12 @@ export default buildConfig({
     meta: {
       titleSuffix: ' · Painel Lucas Paiva',
     },
+    components: {
+      // Com o banco vazio, o Payload abre essa tela; o cadastro é fechado (ver Users).
+      views: {
+        createFirstUser: { Component: '/components/admin/signup-closed#SignupClosed' },
+      },
+    },
   },
   i18n: {
     supportedLanguages: { pt, en },
