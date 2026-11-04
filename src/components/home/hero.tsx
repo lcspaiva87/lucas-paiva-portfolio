@@ -6,6 +6,7 @@ import { Magnetic } from '@/components/motion/magnetic'
 import { PLATFORM_LABEL, SocialIcon } from '@/components/site/social-icon'
 import { Tech } from '@/components/tech'
 import { Button, ButtonArrow } from '@/components/ui/button'
+import { getI18n } from '@/i18n/server'
 import { media } from '@/lib/cms'
 import type { Profile, Technology } from '@/payload-types'
 
@@ -109,7 +110,8 @@ function CodeWindow({ profile, stack }: { profile: Profile; stack: string[] }) {
   )
 }
 
-export function Hero({ profile, heroTechs }: { profile: Profile; heroTechs: Technology[] }) {
+export async function Hero({ profile, heroTechs }: { profile: Profile; heroTechs: Technology[] }) {
+  const { t, href } = await getI18n()
   const resume = media(profile.resume)
   const [first, ...rest] = profile.name.split(' ')
 
@@ -163,8 +165,8 @@ export function Hero({ profile, heroTechs }: { profile: Profile; heroTechs: Tech
           >
             <Magnetic>
               <Button asChild>
-                <Link href="/#projetos">
-                  Ver projetos
+                <Link href={href('/#projetos')}>
+                  {t.hero.viewProjects}
                   <ButtonArrow>
                     <ArrowRight strokeWidth={2.2} />
                   </ButtonArrow>
@@ -176,7 +178,7 @@ export function Hero({ profile, heroTechs }: { profile: Profile; heroTechs: Tech
                 <Button asChild variant="secondary">
                   <a href={resume.url!} download>
                     <Download />
-                    Baixar currículo
+                    {t.hero.downloadResume}
                   </a>
                 </Button>
               </Magnetic>
@@ -206,7 +208,7 @@ export function Hero({ profile, heroTechs }: { profile: Profile; heroTechs: Tech
           className="relative mx-auto aspect-[375/500] w-full max-w-[640px] min-w-0 motion-safe:animate-fade-up sm:aspect-[600/560]"
           style={delay(200)}
         >
-          <HeroEarth />
+          <HeroEarth place={profile.location || 'Fortaleza, CE'} />
           <CodeWindow
             profile={profile}
             stack={heroTechs.map((t) => (t.abbr === 'RN' ? 'RN' : t.name)).slice(0, 4)}

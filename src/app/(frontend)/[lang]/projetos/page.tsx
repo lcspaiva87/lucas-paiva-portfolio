@@ -4,33 +4,42 @@ import { ProjectCard } from '@/components/projects/project-card'
 import { ProjectFilter } from '@/components/projects/project-filter'
 import { Highlight } from '@/components/ui/highlight'
 import { SectionLabel } from '@/components/ui/section-label'
+import { plural } from '@/i18n/messages'
+import { getI18n } from '@/i18n/server'
 import { getProfile, getProjects } from '@/lib/cms'
 import { plainText } from '@/lib/format'
-import { CATEGORY_LABEL } from '@/lib/labels'
+import { alternates } from '@/lib/seo'
+import type { Project } from '@/payload-types'
 
-export const metadata: Metadata = {
-  title: 'Projetos',
-  description: 'Produtos digitais que desenvolvi, do conceito à entrega: apps mobile, web e SaaS.',
-  alternates: { canonical: '/projetos' },
-  openGraph: { url: '/projetos' },
+const CATEGORIES: Project['category'][] = ['mobile', 'web', 'saas', 'desktop']
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n()
+  const { canonical, languages } = alternates(locale, '/projetos')
+  return {
+    title: t.projects.label,
+    description: t.projects.metaDescription,
+    alternates: { canonical, languages },
+    openGraph: { url: canonical },
+  }
 }
 
 export default async function ProjectsPage() {
-  const [projects, profile] = await Promise.all([getProjects(), getProfile()])
-  const categories = (Object.keys(CATEGORY_LABEL) as (keyof typeof CATEGORY_LABEL)[])
-    .filter((value) => projects.some((p) => p.category === value))
-    .map((value) => ({ value, label: CATEGORY_LABEL[value] }))
+  const { locale, t } = await getI18n()
+  const [projects, profile] = await Promise.all([getProjects(locale), getProfile(locale)])
+  const categories = CATEGORIES.filter((value) => projects.some((p) => p.category === value)).map(
+    (value) => ({ value, label: t.category[value] }),
+  )
 
   return (
     <div className="container-page flex flex-col gap-12 pt-16 lg:pt-24">
       <header className="flex flex-col gap-4">
-        <SectionLabel>Projetos</SectionLabel>
+        <SectionLabel>{t.projects.label}</SectionLabel>
         <h1 aria-label={plainText(profile.projectsHeading)} className="m-0 text-display">
           <Highlight text={profile.projectsHeading} />
         </h1>
         <p className="m-0 max-w-2xl text-body-lg text-muted-foreground">
-          {projects.length} {projects.length === 1 ? 'projeto' : 'projetos'}. Os que têm case study
-          abrem com a história completa: problema, solução e o que deu trabalho.
+          {plural(t.projects.count, projects.length)}. {t.projects.listIntro}
         </p>
       </header>
 

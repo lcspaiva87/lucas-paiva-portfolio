@@ -6,12 +6,15 @@ import { useEffect, useId, useRef, useState } from 'react'
 
 import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { Button } from '@/components/ui/button'
+import { useI18n } from '@/i18n/client'
 
+import { LanguageSwitcher } from './language-switcher'
 import { NAV_LINKS } from './nav-links'
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 export function MobileMenu() {
+  const { t, href: localized } = useI18n()
   const [open, setOpen] = useState(false)
   const panelId = useId()
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -68,7 +71,7 @@ export function MobileMenu() {
       <button
         ref={buttonRef}
         type="button"
-        aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+        aria-label={open ? t.header.closeMenu : t.header.openMenu}
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
@@ -87,25 +90,28 @@ export function MobileMenu() {
         hidden={!open}
         className="fixed inset-0 z-40 overflow-y-auto bg-background/95 px-4 pt-24 pb-10 backdrop-blur-md"
       >
-        <nav aria-label="Menu" className="flex flex-col gap-8">
+        <nav aria-label={t.header.menuLabel} className="flex flex-col gap-8">
           <ul className="flex flex-col">
-            {NAV_LINKS.map(({ href, label }) => (
+            {NAV_LINKS.map(({ href, key }) => (
               <li key={href} className="border-b border-border-subtle">
                 <Link
-                  href={href}
+                  href={localized(href)}
                   onClick={close}
                   className="flex min-h-14 items-center text-2xl font-extrabold tracking-[-0.03em] text-foreground no-underline"
                 >
-                  {label}
+                  {t.nav[key]}
                 </Link>
               </li>
             ))}
           </ul>
-          <div className="flex items-center justify-between gap-4">
-            <ThemeToggle />
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
             <Button asChild size="md">
-              <Link href="/#contato" onClick={close}>
-                Contato
+              <Link href={localized('/#contato')} onClick={close}>
+                {t.nav.contact}
               </Link>
             </Button>
           </div>

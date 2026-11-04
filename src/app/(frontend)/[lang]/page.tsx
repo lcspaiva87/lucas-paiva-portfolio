@@ -6,22 +6,24 @@ import { ProjectsSection } from '@/components/home/projects-section'
 import { StackSection } from '@/components/home/stack-section'
 import { Stats } from '@/components/home/stats'
 import { JsonLd } from '@/components/json-ld'
+import { getLocale } from '@/i18n/server'
 import { getExperiences, getProfile, getProjects, getTechnologies } from '@/lib/cms'
 import { personSchema } from '@/lib/structured-data'
 
 export default async function HomePage() {
+  const locale = await getLocale()
   const [profile, projects, technologies, experiences] = await Promise.all([
-    getProfile(),
-    getProjects(),
-    getTechnologies(),
-    getExperiences(),
+    getProfile(locale),
+    getProjects(locale),
+    getTechnologies(locale),
+    getExperiences(locale),
   ])
 
   const featured = projects.filter((p) => p.featured)
 
   return (
     <>
-      <JsonLd data={personSchema(profile, technologies)} />
+      <JsonLd data={personSchema(profile, technologies, locale)} />
       <Hero profile={profile} heroTechs={technologies.filter((t) => t.showInHero)} />
       <Stats stats={profile.stats ?? []} />
       <About profile={profile} />

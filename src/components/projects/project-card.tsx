@@ -5,6 +5,7 @@ import type { CSSProperties } from 'react'
 import { Glyph } from '@/components/glyph'
 import { TiltCard } from '@/components/motion/tilt-card'
 import { TechChip } from '@/components/ui/tech-chip'
+import { getI18n } from '@/i18n/server'
 import { hasCaseStudy, media, populated } from '@/lib/cms'
 import { cn } from '@/lib/utils'
 import type { Project, Technology } from '@/payload-types'
@@ -27,13 +28,14 @@ function PhoneIllustration({ glyph }: { glyph?: string | null }) {
   )
 }
 
-export function ProjectCard({
+export async function ProjectCard({
   project,
   headingLevel = 'h3',
 }: {
   project: Project
   headingLevel?: 'h2' | 'h3'
 }) {
+  const { href } = await getI18n()
   const Heading = headingLevel
   const cover = media(project.cover)
   const techs = populated<Technology>(project.technologies)
@@ -51,7 +53,7 @@ export function ProjectCard({
         <Heading className="m-0 text-[26px] font-extrabold tracking-[-0.03em]">
           {linked ? (
             <Link
-              href={`/projetos/${project.slug}`}
+              href={href(`/projetos/${project.slug}`)}
               className="text-foreground no-underline after:absolute after:inset-0 after:z-[2]"
             >
               {project.title}

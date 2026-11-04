@@ -5,10 +5,12 @@ import { Glyph } from '@/components/glyph'
 import { Reveal } from '@/components/motion/reveal'
 import { SplitHeading } from '@/components/motion/split-heading'
 import { SectionLabel } from '@/components/ui/section-label'
+import { getI18n } from '@/i18n/server'
 import { media } from '@/lib/cms'
 import type { Profile } from '@/payload-types'
 
-export function About({ profile }: { profile: Profile }) {
+export async function About({ profile }: { profile: Profile }) {
+  const { t } = await getI18n()
   const photo = media(profile.photo)
 
   return (
@@ -18,7 +20,7 @@ export function About({ profile }: { profile: Profile }) {
       className="container-page flex scroll-mt-8 flex-wrap items-center gap-x-14 gap-y-10 pt-20 lg:pt-24"
     >
       <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-4">
-        <SectionLabel>Sobre mim</SectionLabel>
+        <SectionLabel>{t.about.label}</SectionLabel>
         <SplitHeading
           id="sobre-titulo"
           text={profile.aboutHeading}
@@ -75,7 +77,7 @@ export function About({ profile }: { profile: Profile }) {
             />
             <span className="relative flex items-center gap-2.5 font-mono text-xs text-placeholder">
               <ImageIcon className="size-[18px]" aria-hidden="true" />
-              Adicione sua foto em Perfil › Sobre
+              {t.about.photoPlaceholder}
             </span>
           </>
         )}

@@ -1,11 +1,14 @@
-export const NAV_LINKS = [
-  { href: '/#topo', label: 'Início' },
-  { href: '/#sobre', label: 'Sobre' },
-  { href: '/#projetos', label: 'Projetos' },
-  { href: '/projetos', label: 'Case Studies' },
-  { href: '/#experiencia', label: 'Experiência' },
-  { href: '/#stack', label: 'Stack' },
-] as const
+import type { Dictionary } from '@/i18n/messages'
+
+/** Caminhos em português; `href()` adiciona o prefixo do idioma. O texto vem de `t.nav`. */
+export const NAV_LINKS: { href: string; key: keyof Dictionary['nav'] }[] = [
+  { href: '/#topo', key: 'home' },
+  { href: '/#sobre', key: 'about' },
+  { href: '/#projetos', key: 'projects' },
+  { href: '/projetos', key: 'caseStudies' },
+  { href: '/#experiencia', key: 'experience' },
+  { href: '/#stack', key: 'stack' },
+]
 
 /** Link de navegação com sublinhado laranja que cresce no hover (topo e rodapé). */
 export const NAV_LINK_CLASS =

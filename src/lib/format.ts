@@ -1,23 +1,27 @@
-const monthFormat = new Intl.DateTimeFormat('pt-BR', {
-  month: 'short',
-  year: 'numeric',
-  timeZone: 'UTC',
-})
+import { HTML_LANG, type Locale } from '@/i18n/config'
+import { DICTIONARIES, plural } from '@/i18n/messages'
 
-/** "fev 2024" */
-export function formatMonth(date: string | null | undefined) {
+const monthFormat = (locale: Locale) =>
+  new Intl.DateTimeFormat(HTML_LANG[locale], { month: 'short', year: 'numeric', timeZone: 'UTC' })
+
+/** "fev 2024" / "Feb 2024" */
+export function formatMonth(date: string | null | undefined, locale: Locale) {
   if (!date) return null
-  return monthFormat
+  return monthFormat(locale)
     .formatToParts(new Date(date))
     .filter((p) => p.type === 'month' || p.type === 'year')
     .map((p) => p.value.replace('.', ''))
     .join(' ')
 }
 
-/** "fev 2024 — atual" */
-export function formatPeriod(start: string | null | undefined, end: string | null | undefined) {
-  const from = formatMonth(start)
-  const to = formatMonth(end) ?? 'atual'
+/** "fev 2024 — atual" / "Feb 2024 — present" */
+export function formatPeriod(
+  start: string | null | undefined,
+  end: string | null | undefined,
+  locale: Locale,
+) {
+  const from = formatMonth(start, locale)
+  const to = formatMonth(end, locale) ?? DICTIONARIES[locale].date.present
   return from ? `${from} — ${to}` : to
 }
 
@@ -25,18 +29,18 @@ export function yearOf(date: string | null | undefined) {
   return date ? new Date(date).getUTCFullYear() : null
 }
 
-/** "1 ano e 9 meses" */
-export function formatTenure(start: string, now = new Date()) {
+/** "1 ano e 9 meses" / "1 year and 9 months" */
+export function formatTenure(start: string, locale: Locale, now = new Date()) {
   const from = new Date(start)
   const months =
     (now.getUTCFullYear() - from.getUTCFullYear()) * 12 + now.getUTCMonth() - from.getUTCMonth() + 1
   const years = Math.floor(months / 12)
   const rest = months % 12
-  const parts = [
-    years && `${years} ${years === 1 ? 'ano' : 'anos'}`,
-    rest && `${rest} ${rest === 1 ? 'mês' : 'meses'}`,
-  ].filter(Boolean)
-  return parts.join(' e ')
+  const { date } = DICTIONARIES[locale]
+  const parts = [years && plural(date.year, years), rest && plural(date.month, rest)].filter(
+    Boolean,
+  )
+  return parts.join(` ${date.and} `)
 }
 
 /** Separa "Do Ceará para o *mundo.*" em trechos normais e destacados. */

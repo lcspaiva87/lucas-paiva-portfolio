@@ -9,21 +9,24 @@ import { JsonLd } from '@/components/json-ld'
 import { Badge } from '@/components/ui/badge'
 import { Button, ButtonArrow } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/section-label'
+import { LOCALES } from '@/i18n/config'
+import { getI18n } from '@/i18n/server'
 import { getProjectBySlug, getProjects, hasCaseStudy, media, populated } from '@/lib/cms'
 import { formatPeriod } from '@/lib/format'
-import { CATEGORY_LABEL, LINK_LABEL, STAGE_LABEL } from '@/lib/labels'
+import { alternates } from '@/lib/seo'
 import { projectSchema } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 import type { Media, Technology } from '@/payload-types'
 
-type Props = { params: Promise<{ slug: string }> }
+type Props = { params: Promise<{ lang: string; slug: string }> }
 
 // Slugs publicados depois do build renderizam sob demanda (os dados vêm do cache).
 // Bloquear aqui, em vez de usar streaming, mantém o status 404 para slugs inexistentes.
 export const instant = false
 
 export async function generateStaticParams() {
-  const projects = await getProjects()
+  // Os slugs são os mesmos nos dois idiomas.
+  const projects = await getProjects(LOCALES[0])
   const slugs = projects.filter(hasCaseStudy).map((p) => ({ slug: p.slug }))
   // Cache Components exige ao menos um item; sem cases publicados, o reserva vira 404.
   return slugs.length > 0 ? slugs : [{ slug: 'em-breve' }]
@@ -31,20 +34,21 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const project = await getProjectBySlug(slug)
+  const { locale, t } = await getI18n()
+  const project = await getProjectBySlug(slug, locale)
   if (!project) return {}
   // Imagem cadastrada no SEO do projeto; sem ela, vale a gerada em opengraph-image.tsx.
   const image = media(project.seo?.image)
-  const title = project.seo?.title || `${project.title} — case study`
+  const title = project.seo?.title || `${project.title} — ${t.caseStudy.titleSuffix}`
   const description = project.seo?.description || project.tagline
-  const url = `/projetos/${project.slug}`
+  const { canonical, languages } = alternates(locale, `/projetos/${project.slug}`)
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical, languages },
     openGraph: {
       type: 'article',
-      url,
+      url: canonical,
       title,
       description,
       ...(image?.url && { images: [{ url: image.url, alt: image.alt }] }),
@@ -69,7 +73,15 @@ function Summary({ text }: { text: string }) {
   )
 }
 
-function PhoneFrame({ image, highlight }: { image?: Media | null; highlight?: boolean }) {
+function PhoneFrame({
+  image,
+  highlight,
+  placeholder,
+}: {
+  image?: Media | null
+  highlight?: boolean
+  placeholder?: string
+}) {
   return (
     <div
       className={cn(
@@ -84,7 +96,7 @@ function PhoneFrame({ image, highlight }: { image?: Media | null; highlight?: bo
       ) : (
         highlight && (
           <span className="absolute inset-x-6 top-1/3 text-center font-mono text-xs text-placeholder">
-            Adicione as telas em Case study › Telas do topo
+            {placeholder}
           </span>
         )
       )}
@@ -94,7 +106,11 @@ function PhoneFrame({ image, highlight }: { image?: Media | null; highlight?: bo
 
 export default async function CaseStudyPage({ params }: Props) {
   const { slug } = await params
-  const [project, projects] = await Promise.all([getProjectBySlug(slug), getProjects()])
+  const { locale, t, href } = await getI18n()
+  const [project, projects] = await Promise.all([
+    getProjectBySlug(slug, locale),
+    getProjects(locale),
+  ])
   if (!project || !hasCaseStudy(project)) notFound()
 
   const cases = projects.filter(hasCaseStudy)
@@ -107,12 +123,14 @@ export default async function CaseStudyPage({ params }: Props) {
   const techs = populated<Technology>(project.technologies)
   const heroImages = populated<Media>(project.heroImages)
   const facts = [
-    { label: 'Papel', value: project.role },
-    { label: 'Plataforma', value: project.platform },
-    { label: 'Stack', value: techs.map((t) => t.name).join(' · ') },
+    { label: t.caseStudy.facts.role, value: project.role },
+    { label: t.caseStudy.facts.platform, value: project.platform },
+    { label: t.caseStudy.facts.stack, value: techs.map((tech) => tech.name).join(' · ') },
     {
-      label: 'Período',
-      value: project.periodStart ? formatPeriod(project.periodStart, project.periodEnd) : null,
+      label: t.caseStudy.facts.period,
+      value: project.periodStart
+        ? formatPeriod(project.periodStart, project.periodEnd, locale)
+        : null,
     },
   ].filter((f) => f.value)
 
@@ -121,23 +139,24 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <article>
-      <JsonLd data={projectSchema(project)} />
+      <JsonLd data={projectSchema(project, locale)} />
       <div className="container-page pt-6">
         <Link
-          href="/projetos"
+          href={href('/projetos')}
           className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-muted-foreground no-underline hover:text-foreground"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Todos os projetos
+          {t.caseStudy.back}
         </Link>
       </div>
 
       <header className="container-page flex flex-col gap-10 pt-16 lg:pt-20">
         <div className="flex flex-wrap items-center gap-3">
           <Eyebrow>
-            Case study {String(index + 1).padStart(2, '0')} · {CATEGORY_LABEL[project.category]}
+            {t.caseStudy.eyebrow} {String(index + 1).padStart(2, '0')} ·{' '}
+            {t.category[project.category]}
           </Eyebrow>
-          <Badge variant="brand">{STAGE_LABEL[project.stage]}</Badge>
+          <Badge variant="brand">{t.stage[project.stage]}</Badge>
         </div>
         <h1 className="m-0 text-[clamp(3.5rem,10vw,10rem)] leading-[0.9] font-extrabold tracking-[-0.055em]">
           {project.title}
@@ -160,7 +179,7 @@ export default async function CaseStudyPage({ params }: Props) {
             {project.links.map((link, i) => (
               <Button key={link.id ?? link.url} asChild variant={i === 0 ? 'primary' : 'secondary'}>
                 <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  {link.label || LINK_LABEL[link.kind]}
+                  {link.label || t.link[link.kind]}
                   <ButtonArrow>
                     <ArrowUpRight />
                   </ButtonArrow>
@@ -178,7 +197,7 @@ export default async function CaseStudyPage({ params }: Props) {
             className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,color-mix(in_oklab,var(--primary)_18%,transparent),transparent_60%)]"
           />
           <PhoneFrame image={phones[1]} />
-          <PhoneFrame image={phones[0]} highlight />
+          <PhoneFrame image={phones[0]} highlight placeholder={t.caseStudy.screensPlaceholder} />
           <PhoneFrame image={phones[2]} />
         </div>
       </div>
@@ -188,11 +207,13 @@ export default async function CaseStudyPage({ params }: Props) {
       {next && next.id !== project.id && (
         <div className="container-page pt-28 lg:pt-40">
           <Link
-            href={hasCaseStudy(next) ? `/projetos/${next.slug}` : '/projetos'}
+            href={href(hasCaseStudy(next) ? `/projetos/${next.slug}` : '/projetos')}
             className="group/next flex flex-wrap items-end justify-between gap-6 border-t border-border py-12 text-foreground no-underline"
           >
             <span className="flex flex-col gap-3">
-              <span className="font-mono text-[13px] text-muted-foreground">Próximo projeto</span>
+              <span className="font-mono text-[13px] text-muted-foreground">
+                {t.caseStudy.next}
+              </span>
               <span className="text-[clamp(2.5rem,6vw,6rem)] leading-[0.95] font-extrabold tracking-[-0.05em] transition-colors group-hover/next:text-primary">
                 {next.title}
               </span>

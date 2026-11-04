@@ -3,6 +3,9 @@ import { RevealGroup, RevealItem } from '@/components/motion/reveal'
 import { SplitHeading } from '@/components/motion/split-heading'
 import { SectionLabel } from '@/components/ui/section-label'
 import { TechChip } from '@/components/ui/tech-chip'
+import type { Locale } from '@/i18n/config'
+import { type Dictionary, fill } from '@/i18n/messages'
+import { getI18n } from '@/i18n/server'
 import { populated } from '@/lib/cms'
 import { formatMonth, formatPeriod, yearOf } from '@/lib/format'
 import { cn } from '@/lib/utils'
@@ -14,12 +17,12 @@ import { Tenure } from './tenure'
 const RAIL = 'clamp(14px, 2.4vw, 36px)'
 const INDENT = 'clamp(40px, 6vw, 96px)'
 
-function periodOf(exp: Experience) {
+function periodOf(exp: Experience, locale: Locale, t: Dictionary) {
   if (exp.kind === 'education') {
-    const end = formatMonth(exp.endDate)
-    return end ? `Formação · conclusão ${end}` : 'Formação'
+    const end = formatMonth(exp.endDate, locale)
+    return end ? fill(t.experience.graduation, { date: end }) : t.experience.education
   }
-  return formatPeriod(exp.startDate, exp.endDate)
+  return formatPeriod(exp.startDate, exp.endDate, locale)
 }
 
 function BulletCard({
@@ -41,7 +44,17 @@ function BulletCard({
   )
 }
 
-function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
+function TimelineItem({
+  exp,
+  current,
+  locale,
+  t,
+}: {
+  exp: Experience
+  current: boolean
+  locale: Locale
+  t: Dictionary
+}) {
   const techs = populated<Technology>(exp.technologies)
   const year = yearOf(exp.startDate) ?? yearOf(exp.endDate)
   const responsibilities = exp.responsibilities ?? []
@@ -78,7 +91,7 @@ function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
 
       <div className="flex min-w-0 flex-[1_1_240px] flex-col gap-2.5">
         <span className="font-mono text-[13px] text-brand-ink">
-          {periodOf(exp)}{' '}
+          {periodOf(exp, locale, t)}{' '}
           {exp.kind === 'work' && !exp.endDate && exp.startDate && <Tenure since={exp.startDate} />}
         </span>
         <h3 className="m-0 text-card-title">{exp.organization || exp.title}</h3>
@@ -94,9 +107,9 @@ function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
         {(responsibilities.length > 0 || results.length > 0) && (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
             {responsibilities.length > 0 && (
-              <BulletCard title="Responsabilidades" items={responsibilities} />
+              <BulletCard title={t.experience.responsibilities} items={responsibilities} />
             )}
-            {results.length > 0 && <BulletCard title="Resultados" items={results} />}
+            {results.length > 0 && <BulletCard title={t.experience.results} items={results} />}
           </div>
         )}
         {techs.length > 0 && (
@@ -113,7 +126,7 @@ function TimelineItem({ exp, current }: { exp: Experience; current: boolean }) {
   )
 }
 
-export function ExperienceSection({
+export async function ExperienceSection({
   heading,
   experiences,
 }: {
@@ -121,6 +134,7 @@ export function ExperienceSection({
   experiences: Experience[]
 }) {
   if (experiences.length === 0) return null
+  const { locale, t } = await getI18n()
   return (
     <section
       id="experiencia"
@@ -128,7 +142,7 @@ export function ExperienceSection({
       className="container-page relative isolate flex scroll-mt-8 flex-col gap-[72px] pt-28 lg:pt-32"
     >
       <div className="flex flex-col gap-3.5">
-        <SectionLabel>Experiência</SectionLabel>
+        <SectionLabel>{t.experience.label}</SectionLabel>
         <SplitHeading
           id="exp-titulo"
           text={heading}
@@ -155,7 +169,7 @@ export function ExperienceSection({
           className="absolute -top-[34px] rounded-full bg-brand-soft px-2.5 py-1 font-mono text-[11px] tracking-[0.08em] text-brand-ink uppercase"
           style={{ left: `calc(${RAIL} - 22px)` }}
         >
-          Hoje
+          {t.experience.today}
         </span>
         <RevealGroup
           as="ol"
@@ -164,7 +178,13 @@ export function ExperienceSection({
           style={{ paddingLeft: INDENT }}
         >
           {experiences.map((exp, i) => (
-            <TimelineItem key={exp.id} exp={exp} current={i === 0 && !exp.endDate} />
+            <TimelineItem
+              key={exp.id}
+              exp={exp}
+              current={i === 0 && !exp.endDate}
+              locale={locale}
+              t={t}
+            />
           ))}
         </RevealGroup>
       </div>
