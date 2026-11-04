@@ -165,7 +165,7 @@ export async function Hero({ profile, heroTechs }: { profile: Profile; heroTechs
           >
             <Magnetic>
               <Button asChild>
-                <Link href={href('/#projetos')}>
+                <Link href={href('/#projects')}>
                   {t.hero.viewProjects}
                   <ButtonArrow>
                     <ArrowRight strokeWidth={2.2} />

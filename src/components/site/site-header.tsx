@@ -38,7 +38,7 @@ export async function SiteHeader() {
           <ThemeToggle />
           <Magnetic strength={6}>
             <Button asChild size="md">
-              <Link href={href('/#contato')}>
+              <Link href={href('/#contact')}>
                 {t.nav.contact}
                 <ButtonArrow>
                   <ArrowUpRight strokeWidth={2.4} />

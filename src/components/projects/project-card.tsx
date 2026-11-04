@@ -53,7 +53,7 @@ export async function ProjectCard({
         <Heading className="m-0 text-[26px] font-extrabold tracking-[-0.03em]">
           {linked ? (
             <Link
-              href={href(`/projetos/${project.slug}`)}
+              href={href(`/projects/${project.slug}`)}
               className="text-foreground no-underline after:absolute after:inset-0 after:z-[2]"
             >
               {project.title}

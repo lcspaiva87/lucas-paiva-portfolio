@@ -39,7 +39,7 @@ const APP_CATEGORY: Record<Project['category'], string> = {
 }
 
 export function projectSchema(project: Project, locale: Locale) {
-  const page = absoluteUrl(localePath(locale, `/projetos/${project.slug}`))
+  const page = absoluteUrl(localePath(locale, `/projects/${project.slug}`))
   const store = project.links?.find((l) => l.kind === 'play-store' || l.kind === 'app-store')
   const site = project.links?.find((l) => l.kind === 'website')
   return {

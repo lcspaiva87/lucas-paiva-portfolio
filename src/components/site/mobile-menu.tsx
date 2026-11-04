@@ -27,7 +27,7 @@ export function MobileMenu() {
     if (!button || !panel) return
 
     // O resto da página fica inacessível (teclado e leitor de tela) enquanto o menu está aberto.
-    const background = ['conteudo', 'rodape']
+    const background = ['content', 'rodape']
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el))
     background.forEach((el) => (el.inert = true))
@@ -110,7 +110,7 @@ export function MobileMenu() {
               <LanguageSwitcher />
             </div>
             <Button asChild size="md">
-              <Link href={localized('/#contato')} onClick={close}>
+              <Link href={localized('/#contact')} onClick={close}>
                 {t.nav.contact}
               </Link>
             </Button>

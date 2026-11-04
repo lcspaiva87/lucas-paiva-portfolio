@@ -14,14 +14,14 @@ export const HTML_LANG: Record<Locale, string> = { pt: 'pt-BR', en: 'en' }
 
 export const OG_LOCALE: Record<Locale, string> = { pt: 'pt_BR', en: 'en_US' }
 
-/** "/projetos" → "/en/projetos", "/#sobre" → "/en#sobre". O português não muda. */
+/** "/projects" → "/en/projects", "/#about" → "/en#about". O português não muda. */
 export function localePath(locale: Locale, path = '/') {
   if (locale === DEFAULT_LOCALE) return path
   if (path === '/') return `/${locale}`
   return path.startsWith('/#') ? `/${locale}${path.slice(1)}` : `/${locale}${path}`
 }
 
-/** "/en/projetos" → "/projetos". */
+/** "/en/projects" → "/projects". */
 export function stripLocale(pathname: string) {
   const [, first, ...rest] = pathname.split('/')
   return isLocale(first) ? `/${rest.join('/')}` : pathname

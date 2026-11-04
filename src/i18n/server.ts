@@ -11,7 +11,7 @@ export async function getLocale(): Promise<Locale> {
   return value
 }
 
-/** Idioma, textos e um gerador de links que mantém o idioma: `href('/projetos')`. */
+/** Idioma, textos e um gerador de links que mantém o idioma: `href('/projects')`. */
 export async function getI18n() {
   const locale = await getLocale()
   return {

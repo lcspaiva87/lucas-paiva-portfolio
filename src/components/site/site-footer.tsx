@@ -19,7 +19,7 @@ export async function SiteFooter() {
       <footer id="rodape" className="container-page flex flex-col gap-7 pt-6 pb-10">
         <div className="flex flex-wrap items-center justify-between gap-6">
           <Link
-            href={localized('/#topo')}
+            href={localized('/#top')}
             className="flex items-center gap-4 text-foreground no-underline"
           >
             <LogoMark size={48} />
@@ -73,7 +73,7 @@ export async function SiteFooter() {
             {t.footer.rights}
           </span>
           <a
-            href="#topo"
+            href="#top"
             className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-foreground no-underline hover:text-primary light:hover:text-brand-ink"
           >
             {t.footer.backToTop} <span aria-hidden="true">↑</span>
