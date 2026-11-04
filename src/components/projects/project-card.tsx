@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react'
 
 import { Glyph } from '@/components/glyph'
 import { TiltCard } from '@/components/motion/tilt-card'
-import { TechChip } from '@/components/ui/tech-chip'
+import { TechIcon } from '@/components/ui/tech-chip'
 import { getI18n } from '@/i18n/server'
 import { hasCaseStudy, media, populated } from '@/lib/cms'
 import { cn } from '@/lib/utils'
@@ -74,10 +74,19 @@ export async function ProjectCard({
         </Heading>
         <p className="m-0 text-sm leading-[1.6] text-foreground-soft">{project.tagline}</p>
         {techs.length > 0 && (
-          <ul className="mt-auto flex flex-wrap gap-1.5 pt-2">
+          // Só os ícones: o nome fica no title (dica ao passar o mouse) e para leitores de tela.
+          <ul className="mt-auto flex flex-wrap gap-2 pt-2">
             {techs.map((tech) => (
-              <li key={tech.id}>
-                <TechChip variant="tag" name={tech.name} />
+              <li key={tech.id} title={tech.name}>
+                <TechIcon
+                  glyph={tech.icon}
+                  abbr={tech.abbr || tech.name.slice(0, 2)}
+                  appearance={tech.appearance}
+                  color={tech.color ?? undefined}
+                  onColor={tech.onColor ?? undefined}
+                  className="size-8"
+                />
+                <span className="sr-only">{tech.name}</span>
               </li>
             ))}
           </ul>
