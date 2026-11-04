@@ -27,7 +27,7 @@ import { Welcome as Welcome_cdb297238b4d2c8d6e0af424e47dc955 } from '../../../co
 import { BrandFonts as BrandFonts_182f4be50704d447ba95ef58059ce690 } from '../../../components/admin/brand-fonts'
 import { SignupClosed as SignupClosed_403b098b0a578fd68aa71ac283d7291f } from '../../../components/admin/signup-closed'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
-import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
+import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
@@ -60,5 +60,5 @@ export const importMap = {
   "/components/admin/brand-fonts#BrandFonts": BrandFonts_182f4be50704d447ba95ef58059ce690,
   "/components/admin/signup-closed#SignupClosed": SignupClosed_403b098b0a578fd68aa71ac283d7291f,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
+  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e
 }
