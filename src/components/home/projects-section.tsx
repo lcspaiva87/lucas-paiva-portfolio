@@ -4,9 +4,17 @@ import { RevealGroup } from '@/components/motion/reveal'
 import { SplitHeading } from '@/components/motion/split-heading'
 import { ProjectCard } from '@/components/projects/project-card'
 import { SectionLabel } from '@/components/ui/section-label'
+import { getI18n } from '@/i18n/server'
 import type { Project } from '@/payload-types'
 
-export function ProjectsSection({ heading, projects }: { heading: string; projects: Project[] }) {
+export async function ProjectsSection({
+  heading,
+  projects,
+}: {
+  heading: string
+  projects: Project[]
+}) {
+  const { t, href } = await getI18n()
   return (
     <section
       id="projetos"
@@ -15,7 +23,7 @@ export function ProjectsSection({ heading, projects }: { heading: string; projec
     >
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-3.5">
-          <SectionLabel>Projetos</SectionLabel>
+          <SectionLabel>{t.projects.label}</SectionLabel>
           <SplitHeading
             id="proj-titulo"
             text={heading}
@@ -23,10 +31,10 @@ export function ProjectsSection({ heading, projects }: { heading: string; projec
           />
         </div>
         <Link
-          href="/projetos"
+          href={href('/projetos')}
           className="inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-primary no-underline hover:text-foreground light:text-brand-ink"
         >
-          Ver todos os projetos <span aria-hidden="true">→</span>
+          {t.projects.viewAll} <span aria-hidden="true">→</span>
         </Link>
       </div>
 

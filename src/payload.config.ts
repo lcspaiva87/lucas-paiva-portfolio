@@ -14,6 +14,7 @@ import { Projects } from './collections/Projects'
 import { Technologies } from './collections/Technologies'
 import { Users } from './collections/Users'
 import { Profile } from './globals/Profile'
+import { DEFAULT_LOCALE } from './i18n/config'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
@@ -32,6 +33,15 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { pt, en },
     fallbackLanguage: 'pt',
+  },
+  // Conteúdo do site em dois idiomas. Campo sem tradução mostra o português.
+  localization: {
+    locales: [
+      { code: 'pt', label: 'Português' },
+      { code: 'en', label: 'English' },
+    ],
+    defaultLocale: DEFAULT_LOCALE,
+    fallback: true,
   },
   collections: [Projects, Technologies, Experiences, Media, Users],
   globals: [Profile],

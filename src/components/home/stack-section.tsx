@@ -5,38 +5,19 @@ import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal'
 import { SplitHeading } from '@/components/motion/split-heading'
 import { SectionLabel } from '@/components/ui/section-label'
 import { TechIcon } from '@/components/ui/tech-chip'
+import { getI18n } from '@/i18n/server'
 import { cn } from '@/lib/utils'
 import type { Technology } from '@/payload-types'
 
 type Group = Exclude<Technology['group'], 'other'>
 
-const GROUPS: Record<Group, { title: string; description: string; Icon: LucideIcon }> = {
-  frontend: {
-    title: 'Front-end',
-    description:
-      'Criação de interfaces modernas, performáticas e focadas na melhor experiência do usuário.',
-    Icon: Boxes,
-  },
-  backend: {
-    title: 'Back-end',
-    description: 'APIs, integrações e regras de negócio robustas.',
-    Icon: CodeXml,
-  },
-  mobile: {
-    title: 'Mobile',
-    description: 'Apps nativos com alta performance e boa UX.',
-    Icon: Smartphone,
-  },
-  data: {
-    title: 'Dados',
-    description: 'Modelagem, persistência e análise de dados.',
-    Icon: Database,
-  },
-  tools: {
-    title: 'Ferramentas',
-    description: 'Produtividade, build, versionamento e distribuição.',
-    Icon: Layers,
-  },
+// Títulos e descrições dos grupos ficam nos dicionários (stack.groups).
+const ICONS: Record<Group, LucideIcon> = {
+  frontend: Boxes,
+  backend: CodeXml,
+  mobile: Smartphone,
+  data: Database,
+  tools: Layers,
 }
 
 const ORDER: Group[] = ['frontend', 'backend', 'mobile', 'data', 'tools']
@@ -133,7 +114,7 @@ function LeadWave() {
   )
 }
 
-export function StackSection({
+export async function StackSection({
   heading,
   intro,
   technologies,
@@ -146,6 +127,8 @@ export function StackSection({
     technologies.filter((t) => t.group === group && t.showInStack !== false)
   const [lead, ...others] = ORDER.filter((g) => byGroup(g).length > 0)
   if (!lead) return null
+  const { t } = await getI18n()
+  const groups = t.stack.groups
 
   return (
     <section
@@ -155,7 +138,7 @@ export function StackSection({
     >
       <div className="flex flex-wrap items-end justify-between gap-x-12 gap-y-4">
         <div className="flex flex-col gap-3.5">
-          <SectionLabel>Stack</SectionLabel>
+          <SectionLabel>{t.stack.label}</SectionLabel>
           <SplitHeading
             id="stack-titulo"
             text={heading}
@@ -178,12 +161,14 @@ export function StackSection({
       >
         <LeadWave />
         <div className="relative flex min-w-0 flex-[1_1_340px] flex-col gap-3.5 pb-6">
-          <span className="font-mono text-[13px] text-foreground-soft">01 — Especialidade</span>
+          <span className="font-mono text-[13px] text-foreground-soft">
+            01 — {t.stack.specialty}
+          </span>
           <h3 className="m-0 text-[clamp(3.25rem,6vw,5.25rem)] leading-[0.95] font-extrabold tracking-[-0.05em]">
-            {GROUPS[lead].title}
+            {groups[lead].title}
           </h3>
           <p className="m-0 max-w-[400px] text-base leading-[1.55] text-foreground-soft">
-            {GROUPS[lead].description}
+            {groups[lead].description}
           </p>
         </div>
         <div aria-hidden="true" className="hidden w-px self-stretch bg-border xl:block" />
@@ -202,7 +187,8 @@ export function StackSection({
 
       <RevealGroup className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
         {others.map((group, i) => {
-          const { title, description, Icon } = GROUPS[group]
+          const { title, description } = groups[group]
+          const Icon = ICONS[group]
           return (
             <RevealItem
               as="article"

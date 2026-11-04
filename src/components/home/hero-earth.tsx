@@ -5,6 +5,7 @@ import { useReducedMotion } from 'motion/react'
 import { useTheme } from 'next-themes'
 import { useEffect, useRef, useState } from 'react'
 
+import { useI18n } from '@/i18n/client'
 import { cn } from '@/lib/utils'
 
 import { EarthOrbitsBack, EarthOrbitsFront } from './earth-orbits'
@@ -89,7 +90,8 @@ function themeOptions(theme: 'dark' | 'light'): Partial<COBEOptions> {
  * para o mundo. Gira sozinha, acelera com o scroll e pode ser arrastada.
  * Até carregar (ou sem WebGL, ou com "reduzir movimento") mostra o globo em SVG.
  */
-export function HeroEarth() {
+export function HeroEarth({ place }: { place: string }) {
+  const { t } = useI18n()
   const squareRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)
@@ -266,7 +268,7 @@ export function HeroEarth() {
           <canvas
             ref={canvasRef}
             role="img"
-            aria-label="Globo terrestre girando, com Fortaleza em destaque e arcos de luz ligando a cidade ao mundo"
+            aria-label={t.hero.globeLabel}
             className="size-full cursor-grab touch-pan-y"
           />
         </div>
@@ -286,7 +288,7 @@ export function HeroEarth() {
             />
           ))}
           <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-[#6b2a10] bg-[rgb(20_17_15/0.9)] px-2.5 py-1 font-mono text-[11px] whitespace-nowrap text-[#ff8a5c] shadow-[0_8px_24px_-8px_rgb(255_90_31/0.5)]">
-            Fortaleza, CE
+            {place}
           </span>
         </div>
       </div>

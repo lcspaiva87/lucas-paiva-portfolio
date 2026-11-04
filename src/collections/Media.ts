@@ -26,6 +26,7 @@ export const Media: CollectionConfig = {
       label: 'Texto alternativo',
       type: 'text',
       required: true,
+      localized: true,
       admin: { description: 'Descreva a imagem para leitores de tela.' },
     },
   ],

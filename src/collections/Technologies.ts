@@ -42,7 +42,14 @@ export const Technologies: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'name', label: 'Nome', type: 'text', required: true, unique: true },
+        {
+          name: 'name',
+          label: 'Nome',
+          type: 'text',
+          required: true,
+          unique: true,
+          localized: true,
+        },
         {
           name: 'icon',
           label: 'Logo',

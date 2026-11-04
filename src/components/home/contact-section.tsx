@@ -5,9 +5,11 @@ import { SplitHeading } from '@/components/motion/split-heading'
 import { Badge } from '@/components/ui/badge'
 import { Button, ButtonArrow } from '@/components/ui/button'
 import { SectionLabel } from '@/components/ui/section-label'
+import { getI18n } from '@/i18n/server'
 import type { Profile } from '@/payload-types'
 
-export function ContactSection({ profile }: { profile: Profile }) {
+export async function ContactSection({ profile }: { profile: Profile }) {
+  const { t } = await getI18n()
   return (
     <section
       id="contato"
@@ -21,9 +23,9 @@ export function ContactSection({ profile }: { profile: Profile }) {
         />
         <div className="relative flex max-w-2xl flex-col gap-4">
           <div className="flex flex-wrap items-center gap-3">
-            <SectionLabel>Contato</SectionLabel>
+            <SectionLabel>{t.contact.label}</SectionLabel>
             {profile.available && (
-              <Badge variant="success">{profile.availabilityText || 'Disponível'}</Badge>
+              <Badge variant="success">{profile.availabilityText || t.contact.available}</Badge>
             )}
           </div>
           <SplitHeading
@@ -44,7 +46,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
           <Button asChild className="relative w-full sm:w-auto">
             <a href={`mailto:${profile.email}`}>
               <Mail />
-              Enviar mensagem
+              {t.contact.sendMessage}
               <ButtonArrow>
                 <ArrowUpRight strokeWidth={2.4} />
               </ButtonArrow>

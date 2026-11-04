@@ -3,6 +3,8 @@
 import { m, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { type RefObject, useEffect, useRef } from 'react'
 
+import { useI18n } from '@/i18n/client'
+
 // Elipse da órbita, usada também como trajeto dos pontos que giram em volta do globo.
 const ORBIT = 'M8,260 a292,96 0 1,1 584,0 a292,96 0 1,1 -584,0'
 
@@ -12,6 +14,7 @@ const ORBIT = 'M8,260 a292,96 0 1,1 584,0 a292,96 0 1,1 -584,0'
  * conforme a página rola. Com "reduzir movimento", vira uma imagem estática.
  */
 export function HeroGlobe() {
+  const { t } = useI18n()
   const ref = useRef<SVGSVGElement>(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({
@@ -42,7 +45,7 @@ export function HeroGlobe() {
       viewBox="0 0 600 520"
       className="h-full w-full overflow-visible text-primary"
       role="img"
-      aria-label="Globo de pontos com as principais tecnologias orbitando"
+      aria-label={t.hero.globeFallbackLabel}
     >
       <defs>
         <pattern id="hero-dots" width="10" height="10" patternUnits="userSpaceOnUse">

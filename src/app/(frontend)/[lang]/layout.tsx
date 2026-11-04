@@ -6,7 +6,11 @@ import { SiteFooter } from '@/components/site/site-footer'
 import { SiteHeader } from '@/components/site/site-header'
 import { MotionProvider } from '@/components/motion/motion-provider'
 import { ThemeProvider } from '@/components/theme/theme-provider'
+import { LocaleProvider } from '@/i18n/client'
+import { HTML_LANG, LOCALES, OG_LOCALE } from '@/i18n/config'
+import { getI18n } from '@/i18n/server'
 import { getProfile } from '@/lib/cms'
+import { alternates } from '@/lib/seo'
 import { SITE_URL } from '@/lib/site'
 
 import './globals.css'
@@ -25,10 +29,16 @@ const dmMono = DM_Mono({
   display: 'swap',
 })
 
-// Título, descrição e redes vêm do Perfil no CMS.
+export function generateStaticParams() {
+  return LOCALES.map((lang) => ({ lang }))
+}
+
+// Título, descrição e redes vêm do Perfil no CMS, no idioma da rota.
 export async function generateMetadata(): Promise<Metadata> {
-  const profile = await getProfile()
+  const { locale } = await getI18n()
+  const profile = await getProfile(locale)
   const title = `${profile.name} — ${profile.role}`
+  const { canonical, languages } = alternates(locale, '/')
   return {
     metadataBase: new URL(SITE_URL),
     title: { default: title, template: `%s · ${profile.name}` },
@@ -36,14 +46,15 @@ export async function generateMetadata(): Promise<Metadata> {
     applicationName: profile.name,
     authors: [{ name: profile.name, url: SITE_URL }],
     creator: profile.name,
-    alternates: { canonical: '/' },
+    alternates: { canonical, languages },
     openGraph: {
       type: 'website',
-      locale: 'pt_BR',
+      locale: OG_LOCALE[locale],
+      alternateLocale: LOCALES.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
       siteName: profile.name,
       title,
       description: profile.intro,
-      url: '/',
+      url: canonical,
     },
     twitter: { card: 'summary_large_image', title, description: profile.intro },
     robots: { index: true, follow: true },
@@ -57,10 +68,12 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const { locale, t } = await getI18n()
+
   return (
     <html
-      lang="pt-BR"
+      lang={HTML_LANG[locale]}
       data-theme="dark"
       className={`${jakarta.variable} ${dmMono.variable}`}
       suppressHydrationWarning
@@ -75,23 +88,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             }}
           />
         </noscript>
-        <ThemeProvider>
-          <MotionProvider>
-            <a
-              href="#conteudo"
-              className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-primary-foreground"
-            >
-              Pular para o conteúdo
-            </a>
-            <div id="topo" className="flex min-h-dvh flex-col overflow-x-clip">
-              <SiteHeader />
-              <main id="conteudo" className="flex-1">
-                {children}
-              </main>
-              <SiteFooter />
-            </div>
-          </MotionProvider>
-        </ThemeProvider>
+        <LocaleProvider locale={locale}>
+          <ThemeProvider>
+            <MotionProvider>
+              <a
+                href="#conteudo"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-primary-foreground"
+              >
+                {t.header.skipToContent}
+              </a>
+              <div id="topo" className="flex min-h-dvh flex-col overflow-x-clip">
+                <SiteHeader />
+                <main id="conteudo" className="flex-1">
+                  {children}
+                </main>
+                <SiteFooter />
+              </div>
+            </MotionProvider>
+          </ThemeProvider>
+        </LocaleProvider>
       </body>
     </html>
   )

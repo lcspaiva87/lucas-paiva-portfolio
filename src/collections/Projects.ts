@@ -92,6 +92,7 @@ export const Projects: CollectionConfig = {
               label: 'Frase curta',
               type: 'text',
               required: true,
+              localized: true,
               admin: { placeholder: 'Fotografe o prato e a IA calcula as calorias.' },
             },
             {
@@ -137,6 +138,7 @@ export const Projects: CollectionConfig = {
               name: 'summary',
               label: 'Introdução',
               type: 'textarea',
+              localized: true,
               admin: {
                 description: 'Parágrafo de abertura. A primeira frase fica em destaque.',
               },
@@ -148,12 +150,14 @@ export const Projects: CollectionConfig = {
                   name: 'role',
                   label: 'Papel',
                   type: 'text',
+                  localized: true,
                   admin: { placeholder: 'Produto, design e desenvolvimento' },
                 },
                 {
                   name: 'platform',
                   label: 'Plataforma',
                   type: 'text',
+                  localized: true,
                   admin: { placeholder: 'Android · Google Play' },
                 },
               ],
@@ -205,6 +209,7 @@ export const Projects: CollectionConfig = {
                       name: 'label',
                       label: 'Texto do botão',
                       type: 'text',
+                      localized: true,
                       admin: { placeholder: 'Ver na Google Play' },
                     },
                   ],
@@ -239,8 +244,14 @@ export const Projects: CollectionConfig = {
           name: 'seo',
           label: 'SEO',
           fields: [
-            { name: 'title', label: 'Título', type: 'text' },
-            { name: 'description', label: 'Descrição', type: 'textarea', maxLength: 160 },
+            { name: 'title', label: 'Título', type: 'text', localized: true },
+            {
+              name: 'description',
+              label: 'Descrição',
+              type: 'textarea',
+              maxLength: 160,
+              localized: true,
+            },
             {
               name: 'image',
               label: 'Imagem de compartilhamento',

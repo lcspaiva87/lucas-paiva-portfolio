@@ -1,5 +1,5 @@
 /**
- * Popula o banco com o conteúdo do design. Pode rodar mais de uma vez:
+ * Popula o banco com o conteúdo do design, em português e inglês. Pode rodar mais de uma vez:
  * cria o que falta e atualiza o que já existe (por nome/slug).
  *
  *   pnpm seed
@@ -7,9 +7,10 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+import { DEFAULT_LOCALE, type Locale, LOCALES } from '@/i18n/config'
 import type { Project } from '@/payload-types'
 
-import { experiences, profile, projects, technologies } from './content'
+import { experiences, pick, profile, projects, technologies } from './content'
 
 const context = { disableRevalidate: true }
 
@@ -40,22 +41,60 @@ function richText(paragraphs: readonly string[]): RichText {
   }
 }
 
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+
+/**
+ * Arrays e blocos são compartilhados entre os idiomas; só o texto muda. Para gravar o inglês
+ * nas mesmas linhas, cada item recebe o id que o português criou.
+ */
+function withIds<T>(data: T, saved: unknown): T {
+  if (Array.isArray(data)) {
+    const rows = Array.isArray(saved) ? saved : []
+    return data.map((item, i) => withIds(item, rows[i])) as T
+  }
+  if (isObject(data) && isObject(saved)) {
+    const merged: Record<string, unknown> = { ...data }
+    if (typeof saved.id === 'string' && !('id' in data)) merged.id = saved.id
+    for (const key of Object.keys(data)) merged[key] = withIds(data[key], saved[key])
+    return merged as T
+  }
+  return data
+}
+
 const payload = await getPayload({ config })
 const log = (msg: string) => payload.logger.info(`[seed] ${msg}`)
+const otherLocales = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE)
 
-// Tecnologias
+// Tecnologias (projetos e experiências se referem a elas pelo nome em português)
 const techIds = new Map<string, number>()
 for (const tech of technologies) {
-  const data = { showInStack: true, showInHero: false, ...tech }
+  const data = { showInStack: true, showInHero: false, ...pick(tech, DEFAULT_LOCALE) }
   const { docs } = await payload.find({
     collection: 'technologies',
-    where: { name: { equals: tech.name } },
+    where: { name: { equals: data.name } },
+    locale: DEFAULT_LOCALE,
     limit: 1,
   })
   const doc = docs[0]
-    ? await payload.update({ collection: 'technologies', id: docs[0].id, data, context })
-    : await payload.create({ collection: 'technologies', data, context })
-  techIds.set(tech.name, doc.id)
+    ? await payload.update({
+        collection: 'technologies',
+        id: docs[0].id,
+        data,
+        locale: DEFAULT_LOCALE,
+        context,
+      })
+    : await payload.create({ collection: 'technologies', data, locale: DEFAULT_LOCALE, context })
+  for (const locale of otherLocales) {
+    await payload.update({
+      collection: 'technologies',
+      id: doc.id,
+      data: { name: pick(tech, locale).name },
+      locale,
+      context,
+    })
+  }
+  techIds.set(data.name, doc.id)
 }
 log(`${techIds.size} tecnologias`)
 
@@ -67,15 +106,14 @@ const idsOf = (names: readonly string[]) =>
   })
 
 // Projetos
-for (const project of projects) {
-  const { technologies: techNames, ...fields } = project
+function projectData(project: (typeof projects)[number], locale: Locale) {
+  const { technologies: techNames, ...fields } = pick(project, locale)
   const { caseStudy, ...rest } =
     'caseStudy' in fields ? fields : { ...fields, caseStudy: undefined }
-
-  const data = {
+  return {
     ...rest,
     technologies: idsOf(techNames),
-    links: 'links' in project ? [...project.links] : [],
+    links: 'links' in fields ? fields.links : [],
     layout: caseStudy
       ? [
           {
@@ -88,66 +126,105 @@ for (const project of projects) {
           },
           {
             blockType: 'featureGrid' as const,
-            label: 'Principais funcionalidades',
-            items: caseStudy.features.map((f) => ({ ...f })),
+            label: caseStudy.featuresLabel,
+            items: caseStudy.features,
           },
           {
             blockType: 'challenges' as const,
-            label: 'Desafios técnicos',
-            heading: 'O que deu trabalho',
+            label: caseStudy.challengesLabel,
+            heading: caseStudy.challengesHeading,
             items: caseStudy.challenges.map((title) => ({ title })),
           },
         ]
       : [],
     _status: 'published' as const,
   }
+}
 
+for (const project of projects) {
   const { docs } = await payload.find({
     collection: 'projects',
     where: { slug: { equals: project.slug } },
     limit: 1,
     draft: true,
   })
-  if (docs[0]) {
-    await payload.update({ collection: 'projects', id: docs[0].id, data, context })
-  } else {
-    await payload.create({ collection: 'projects', data, context })
+  const data = projectData(project, DEFAULT_LOCALE)
+  const saved = docs[0]
+    ? await payload.update({
+        collection: 'projects',
+        id: docs[0].id,
+        data,
+        locale: DEFAULT_LOCALE,
+        context,
+      })
+    : await payload.create({ collection: 'projects', data, locale: DEFAULT_LOCALE, context })
+  for (const locale of otherLocales) {
+    await payload.update({
+      collection: 'projects',
+      id: saved.id,
+      data: withIds(projectData(project, locale), saved),
+      locale,
+      context,
+    })
   }
 }
 log(`${projects.length} projetos`)
 
 // Experiências
-for (const exp of experiences) {
-  const data = {
-    ...exp,
-    technologies: idsOf(exp.technologies),
+function experienceData(exp: (typeof experiences)[number], locale: Locale) {
+  const fields = pick(exp, locale)
+  return {
+    ...fields,
+    technologies: idsOf(fields.technologies),
     responsibilities:
-      'responsibilities' in exp ? exp.responsibilities.map((text) => ({ text })) : [],
+      'responsibilities' in fields ? fields.responsibilities.map((text) => ({ text })) : [],
   }
+}
+
+for (const exp of experiences) {
   const { docs } = await payload.find({
     collection: 'experiences',
-    where: { title: { equals: exp.title } },
+    where: { title: { equals: exp.title.pt } },
+    locale: DEFAULT_LOCALE,
     limit: 1,
   })
-  if (docs[0]) {
-    await payload.update({ collection: 'experiences', id: docs[0].id, data, context })
-  } else {
-    await payload.create({ collection: 'experiences', data, context })
+  const data = experienceData(exp, DEFAULT_LOCALE)
+  const saved = docs[0]
+    ? await payload.update({
+        collection: 'experiences',
+        id: docs[0].id,
+        data,
+        locale: DEFAULT_LOCALE,
+        context,
+      })
+    : await payload.create({ collection: 'experiences', data, locale: DEFAULT_LOCALE, context })
+  for (const locale of otherLocales) {
+    await payload.update({
+      collection: 'experiences',
+      id: saved.id,
+      data: withIds(experienceData(exp, locale), saved),
+      locale,
+      context,
+    })
   }
 }
 log(`${experiences.length} experiências`)
 
 // Perfil
-await payload.updateGlobal({
+const savedProfile = await payload.updateGlobal({
   slug: 'profile',
-  data: {
-    ...profile,
-    stats: profile.stats.map((s) => ({ ...s })),
-    facts: profile.facts.map((f) => ({ ...f })),
-    socials: profile.socials.map((s) => ({ ...s })),
-  },
+  data: pick(profile, DEFAULT_LOCALE),
+  locale: DEFAULT_LOCALE,
   context,
 })
+for (const locale of otherLocales) {
+  await payload.updateGlobal({
+    slug: 'profile',
+    data: withIds(pick(profile, locale), savedProfile),
+    locale,
+    context,
+  })
+}
 log('perfil')
 
 log('pronto ✓')

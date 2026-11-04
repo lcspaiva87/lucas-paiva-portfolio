@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { LogoMark } from '@/components/brand/logo'
+import { getI18n } from '@/i18n/server'
 import { getProfile } from '@/lib/cms'
 
 import { CurrentYear } from './current-year'
@@ -9,14 +10,18 @@ import { NAV_LINK_CLASS, NAV_LINKS, NAV_UNDERLINE_CLASS } from './nav-links'
 import { PLATFORM_LABEL, SocialIcon } from './social-icon'
 
 export async function SiteFooter() {
-  const profile = await getProfile()
+  const { locale, t, href: localized } = await getI18n()
+  const profile = await getProfile(locale)
 
   return (
     <>
       <FooterWave />
       <footer id="rodape" className="container-page flex flex-col gap-7 pt-6 pb-10">
         <div className="flex flex-wrap items-center justify-between gap-6">
-          <Link href="/#topo" className="flex items-center gap-4 text-foreground no-underline">
+          <Link
+            href={localized('/#topo')}
+            className="flex items-center gap-4 text-foreground no-underline"
+          >
             <LogoMark size={48} />
             <span aria-hidden="true" className="h-10 w-px bg-border-strong" />
             <span className="flex flex-col gap-0.5">
@@ -43,12 +48,12 @@ export async function SiteFooter() {
             </ul>
           )}
 
-          <nav aria-label="Rodapé">
+          <nav aria-label={t.footer.navLabel}>
             <ul className="m-0 flex list-none flex-wrap gap-1 p-0 max-sm:-ml-3.5">
-              {NAV_LINKS.slice(0, 4).map(({ href, label }) => (
+              {NAV_LINKS.slice(0, 4).map(({ href, key }) => (
                 <li key={href}>
-                  <Link href={href} className={NAV_LINK_CLASS}>
-                    {label}
+                  <Link href={localized(href)} className={NAV_LINK_CLASS}>
+                    {t.nav[key]}
                     <span aria-hidden="true" className={NAV_UNDERLINE_CLASS} />
                   </Link>
                 </li>
@@ -65,13 +70,13 @@ export async function SiteFooter() {
             <span aria-hidden="true" className="mx-2">
               •
             </span>
-            Todos os direitos reservados.
+            {t.footer.rights}
           </span>
           <a
             href="#topo"
             className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-foreground no-underline hover:text-primary light:hover:text-brand-ink"
           >
-            Voltar ao topo <span aria-hidden="true">↑</span>
+            {t.footer.backToTop} <span aria-hidden="true">↑</span>
           </a>
         </div>
       </footer>
