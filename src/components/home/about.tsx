@@ -15,7 +15,7 @@ export async function About({ profile }: { profile: Profile }) {
 
   return (
     <section
-      id="sobre"
+      id="about"
       aria-labelledby="sobre-titulo"
       className="container-page flex scroll-mt-8 flex-wrap items-center gap-x-14 gap-y-10 pt-20 lg:pt-24"
     >

@@ -17,9 +17,9 @@ function NavList({ className, pathname }: { className?: string; pathname: string
     <ul className={cn('flex flex-wrap items-center gap-0.5', className)}>
       {NAV_LINKS.map(({ href, key }) => {
         const active =
-          href === '/projetos'
-            ? Boolean(path?.startsWith('/projetos'))
-            : href === '/#topo' && path === '/'
+          href === '/projects'
+            ? Boolean(path?.startsWith('/projects'))
+            : href === '/#top' && path === '/'
         return (
           <li key={href}>
             <Link

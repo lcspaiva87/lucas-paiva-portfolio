@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Os projetos ficavam em /projetos; links já compartilhados continuam funcionando.
+  async redirects() {
+    return [
+      { source: '/projetos/:path*', destination: '/projects/:path*', permanent: true },
+      { source: '/en/projetos/:path*', destination: '/en/projects/:path*', permanent: true },
+    ]
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

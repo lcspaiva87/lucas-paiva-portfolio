@@ -92,14 +92,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <ThemeProvider>
             <MotionProvider>
               <a
-                href="#conteudo"
+                href="#content"
                 className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-primary-foreground"
               >
                 {t.header.skipToContent}
               </a>
-              <div id="topo" className="flex min-h-dvh flex-col overflow-x-clip">
+              <div id="top" className="flex min-h-dvh flex-col overflow-x-clip">
                 <SiteHeader />
-                <main id="conteudo" className="flex-1">
+                <main id="content" className="flex-1">
                   {children}
                 </main>
                 <SiteFooter />

@@ -26,13 +26,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...localized('/', { lastModified: lastProject, changeFrequency: 'monthly', priority: 1 }),
-    ...localized('/projetos', {
+    ...localized('/projects', {
       lastModified: lastProject,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     ...projects.filter(hasCaseStudy).flatMap((project) =>
-      localized(`/projetos/${project.slug}`, {
+      localized(`/projects/${project.slug}`, {
         lastModified: project.updatedAt,
         changeFrequency: 'yearly',
         priority: 0.7,

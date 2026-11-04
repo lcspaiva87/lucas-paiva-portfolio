@@ -17,7 +17,7 @@ export async function ProjectsSection({
   const { t, href } = await getI18n()
   return (
     <section
-      id="projetos"
+      id="projects"
       aria-labelledby="proj-titulo"
       className="container-page flex scroll-mt-8 flex-col gap-8 pt-24 lg:pt-28"
     >
@@ -31,7 +31,7 @@ export async function ProjectsSection({
           />
         </div>
         <Link
-          href={href('/projetos')}
+          href={href('/projects')}
           className="inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-primary no-underline hover:text-foreground light:text-brand-ink"
         >
           {t.projects.viewAll} <span aria-hidden="true">→</span>

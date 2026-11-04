@@ -1,12 +1,12 @@
 import type { Dictionary } from '@/i18n/messages'
 
-/** Caminhos em português; `href()` adiciona o prefixo do idioma. O texto vem de `t.nav`. */
+/** Caminhos sem idioma; `href()` adiciona o prefixo do idioma. O texto vem de `t.nav`. */
 export const NAV_LINKS: { href: string; key: keyof Dictionary['nav'] }[] = [
-  { href: '/#topo', key: 'home' },
-  { href: '/#sobre', key: 'about' },
-  { href: '/#projetos', key: 'projects' },
-  { href: '/projetos', key: 'caseStudies' },
-  { href: '/#experiencia', key: 'experience' },
+  { href: '/#top', key: 'home' },
+  { href: '/#about', key: 'about' },
+  { href: '/#projects', key: 'projects' },
+  { href: '/projects', key: 'caseStudies' },
+  { href: '/#experience', key: 'experience' },
   { href: '/#stack', key: 'stack' },
 ]
 

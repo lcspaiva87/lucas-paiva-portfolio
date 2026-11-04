@@ -15,7 +15,7 @@ const CATEGORIES: Project['category'][] = ['mobile', 'web', 'saas', 'desktop']
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, t } = await getI18n()
-  const { canonical, languages } = alternates(locale, '/projetos')
+  const { canonical, languages } = alternates(locale, '/projects')
   return {
     title: t.projects.label,
     description: t.projects.metaDescription,

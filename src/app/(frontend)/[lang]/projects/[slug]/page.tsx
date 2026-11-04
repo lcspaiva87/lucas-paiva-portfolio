@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const image = media(project.seo?.image)
   const title = project.seo?.title || `${project.title} — ${t.caseStudy.titleSuffix}`
   const description = project.seo?.description || project.tagline
-  const { canonical, languages } = alternates(locale, `/projetos/${project.slug}`)
+  const { canonical, languages } = alternates(locale, `/projects/${project.slug}`)
   return {
     title,
     description,
@@ -142,7 +142,7 @@ export default async function CaseStudyPage({ params }: Props) {
       <JsonLd data={projectSchema(project, locale)} />
       <div className="container-page pt-6">
         <Link
-          href={href('/projetos')}
+          href={href('/projects')}
           className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-muted-foreground no-underline hover:text-foreground"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
@@ -207,7 +207,7 @@ export default async function CaseStudyPage({ params }: Props) {
       {next && next.id !== project.id && (
         <div className="container-page pt-28 lg:pt-40">
           <Link
-            href={href(hasCaseStudy(next) ? `/projetos/${next.slug}` : '/projetos')}
+            href={href(hasCaseStudy(next) ? `/projects/${next.slug}` : '/projects')}
             className="group/next flex flex-wrap items-end justify-between gap-6 border-t border-border py-12 text-foreground no-underline"
           >
             <span className="flex flex-col gap-3">

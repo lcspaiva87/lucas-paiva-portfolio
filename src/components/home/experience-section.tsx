@@ -137,7 +137,7 @@ export async function ExperienceSection({
   const { locale, t } = await getI18n()
   return (
     <section
-      id="experiencia"
+      id="experience"
       aria-labelledby="exp-titulo"
       className="container-page relative isolate flex scroll-mt-8 flex-col gap-[72px] pt-28 lg:pt-32"
     >

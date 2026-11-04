@@ -12,7 +12,7 @@ export async function ContactSection({ profile }: { profile: Profile }) {
   const { t } = await getI18n()
   return (
     <section
-      id="contato"
+      id="contact"
       aria-labelledby="contato-titulo"
       className="container-page scroll-mt-8 pt-28 lg:pt-32"
     >
