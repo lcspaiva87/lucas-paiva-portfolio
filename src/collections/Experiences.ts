@@ -55,6 +55,7 @@ export const Experiences: CollectionConfig = {
           label: 'Cargo / curso',
           type: 'text',
           required: true,
+          localized: true,
         },
       ],
     },
@@ -77,14 +78,14 @@ export const Experiences: CollectionConfig = {
         },
       ],
     },
-    { name: 'summary', label: 'Resumo', type: 'textarea' },
+    { name: 'summary', label: 'Resumo', type: 'textarea', localized: true },
     {
       name: 'responsibilities',
       label: 'Responsabilidades',
       type: 'array',
       labels: { singular: 'Responsabilidade', plural: 'Responsabilidades' },
       admin: { condition: (data) => data?.kind === 'work' },
-      fields: [{ name: 'text', label: 'Texto', type: 'text', required: true }],
+      fields: [{ name: 'text', label: 'Texto', type: 'text', required: true, localized: true }],
     },
     {
       name: 'results',
@@ -95,7 +96,7 @@ export const Experiences: CollectionConfig = {
         condition: (data) => data?.kind === 'work',
         description: 'O que mudou, para quem e como foi medido.',
       },
-      fields: [{ name: 'text', label: 'Texto', type: 'text', required: true }],
+      fields: [{ name: 'text', label: 'Texto', type: 'text', required: true, localized: true }],
     },
     {
       name: 'technologies',

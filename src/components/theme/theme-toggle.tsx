@@ -4,16 +4,18 @@ import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useSyncExternalStore } from 'react'
 
+import { useI18n } from '@/i18n/client'
 import { cn } from '@/lib/utils'
 
 const options = [
-  { value: 'light', label: 'Tema claro', Icon: Sun },
-  { value: 'dark', label: 'Tema escuro', Icon: Moon },
+  { value: 'light', Icon: Sun },
+  { value: 'dark', Icon: Moon },
 ] as const
 
 const subscribe = () => () => {}
 
 export function ThemeToggle({ className }: { className?: string }) {
+  const { t } = useI18n()
   const { resolvedTheme, setTheme } = useTheme()
   // O tema só é conhecido no cliente; evita mismatch de hidratação.
   const mounted = useSyncExternalStore(
@@ -25,19 +27,19 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <div
       role="group"
-      aria-label="Tema"
+      aria-label={t.theme.label}
       className={cn(
         'flex h-11 rounded-full border border-border bg-card p-[3px] light:border-border-strong',
         className,
       )}
     >
-      {options.map(({ value, label, Icon }) => {
+      {options.map(({ value, Icon }) => {
         const active = mounted && resolvedTheme === value
         return (
           <button
             key={value}
             type="button"
-            aria-label={label}
+            aria-label={t.theme[value]}
             aria-pressed={active}
             onClick={() => setTheme(value)}
             className={cn(

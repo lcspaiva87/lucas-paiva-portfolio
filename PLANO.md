@@ -4,7 +4,7 @@ Base visual: canvas "Portfólio Lucas Paiva" (Direção visual, Home desktop/mob
 
 ## Decisões (03/11/2026)
 - **Painel:** Payload CMS embutido no Next.js (`/admin`)
-- **Infra de produção:** a definir na Fase 5. Até lá, banco `portfolio` num Postgres local em Docker (ver `.env.example`) e uploads em disco (`/media`)
+- **Infra de produção:** Vercel, com Neon (Postgres) e Vercel Blob (uploads). Em dev, banco `portfolio` num Postgres local em Docker (ver `.env.example`) e uploads em disco (`/media`)
 - **Runtime:** Node 24.22.2 (`.nvmrc`), Next.js 16.3, Payload 3.92, pnpm
 - **Editável pelo painel:** projetos + stack/tecnologias + experiência + perfil e textos do site
 
@@ -122,23 +122,27 @@ Uploads com alt text obrigatório e tamanhos gerados (thumb, card, full).
 - [x] Seed com o conteúdo atual: CalorieUp, LuvePet, Scalar Workspace, Adapta, stack completa (`pnpm seed`, pode rodar de novo sem duplicar)
 
 ### Fase 3 — Páginas
-- [ ] Layout: header com nav + toggle de tema, footer
-- [ ] Home: Hero, Números, Sobre, Projetos em destaque, Experiência (timeline), Stack, Contato
-- [ ] `/projetos`: grid com filtro
-- [ ] `/projetos/[slug]`: template do case renderizando os blocos
-- [ ] Versão mobile (menu em sheet, layout 390px)
+- [x] Layout: header com nav + toggle de tema, footer
+- [x] Home: Hero, Números, Sobre, Projetos em destaque, Experiência (timeline), Stack, Contato
+- [x] `/projetos`: grid com filtro
+- [x] `/projetos/[slug]`: template do case renderizando os blocos
+- [x] Versão mobile (menu em tela cheia, layout 375px sem scroll horizontal)
+- [x] Cache Components (`'use cache'` + `cacheTag`) com revalidação ao publicar, testada em `next start`
 
 ### Fase 4 — Movimento e polimento
-- [ ] Animações de entrada, hover magnético, cards com tilt
-- [ ] Globo 3D com rotação no scroll
-- [ ] `prefers-reduced-motion` em tudo
-- [ ] Acessibilidade (contraste, foco, navegação por teclado)
+- [x] Animações de entrada (hero em CSS; seções com `motion` ao entrar na tela), botões magnéticos, cards com tilt de até 4°
+- [x] Terra 3D em WebGL com `cobe` (~6 KB, carregada depois da página): continentes em pontos, Fortaleza em destaque, arcos para o mundo, arraste com inércia e scroll; órbita, anéis e sonar animados em volta. O globo SVG fica como reserva (antes de carregar, sem WebGL e com movimento reduzido). R3F descartado: somaria ~150 KB de three.js
+- [x] `prefers-reduced-motion` em tudo (CSS `motion-safe`, `MotionConfig reducedMotion="user"`, SVG pausado)
+- [ ] Acessibilidade (contraste, foco, navegação por teclado) — revisão dedicada
 
 ### Fase 5 — SEO e lançamento
-- [ ] `generateMetadata` por página, OG image dinâmica (`next/og`), `sitemap.xml`, `robots.txt`, JSON-LD (Person + CreativeWork)
+- [x] `generateMetadata` por página, OG image dinâmica (`next/og`), `sitemap.xml`, `robots.txt`, JSON-LD (Person + SoftwareApplication)
+- [x] Acessibilidade: axe sem violações (3 páginas × 2 temas), menu mobile com foco gerenciado, fallback sem JS
+- [x] Preparação de produção: migrations do Payload (rodam sozinhas na Vercel), uploads no Vercel Blob, site resistente a banco vazio — passo a passo em `DEPLOY.md`
+- [ ] Contas e variáveis (Vercel, Neon e Blob) — com você, seguindo o `DEPLOY.md`
+- [ ] Deploy na Vercel (`development` → `main`) + domínio
 - [ ] Formulário de contato funcionando
 - [ ] Analytics (Vercel Analytics)
-- [ ] Deploy na Vercel + domínio
 - [ ] Lighthouse ≥ 95 em performance/acessibilidade
 
 ---

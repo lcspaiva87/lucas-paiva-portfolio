@@ -1,0 +1,77 @@
+/**
+ * Ícones que podem ser escolhidos para uma tecnologia no painel.
+ * Só valor e rótulo: o desenho de cada um fica em components/tech-glyph.tsx.
+ */
+export const TECH_ICON_OPTIONS = [
+  // Front-end
+  { value: 'react', label: 'React' },
+  { value: 'nextdotjs', label: 'Next.js' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'javascript', label: 'JavaScript' },
+  { value: 'tailwindcss', label: 'Tailwind CSS' },
+  { value: 'shadcnui', label: 'shadcn/ui' },
+  { value: 'reactquery', label: 'React Query' },
+  { value: 'tanstack', label: 'TanStack' },
+  { value: 'redux', label: 'Redux' },
+  { value: 'reactrouter', label: 'React Router' },
+  { value: 'vite', label: 'Vite' },
+  { value: 'sass', label: 'Sass' },
+  { value: 'framer', label: 'Framer / Motion' },
+  { value: 'threedotjs', label: 'Three.js' },
+  { value: 'storybook', label: 'Storybook' },
+  { value: 'figma', label: 'Figma' },
+  { value: 'zod', label: 'Zod' },
+  // Back-end
+  { value: 'nodedotjs', label: 'Node.js' },
+  { value: 'nestjs', label: 'NestJS' },
+  { value: 'graphql', label: 'GraphQL' },
+  { value: 'python', label: 'Python' },
+  { value: 'payloadcms', label: 'Payload CMS' },
+  { value: 'stripe', label: 'Stripe' },
+  { value: 'anthropic', label: 'Anthropic' },
+  { value: 'claude', label: 'Claude' },
+  // Mobile
+  { value: 'expo', label: 'Expo' },
+  { value: 'googleplay', label: 'Google Play' },
+  { value: 'appstore', label: 'App Store' },
+  { value: 'apple', label: 'Apple' },
+  { value: 'android', label: 'Android' },
+  { value: 'ios', label: 'iOS' },
+  { value: 'swift', label: 'Swift' },
+  { value: 'kotlin', label: 'Kotlin' },
+  { value: 'flutter', label: 'Flutter' },
+  // Dados
+  { value: 'postgresql', label: 'PostgreSQL' },
+  { value: 'mysql', label: 'MySQL' },
+  { value: 'mongodb', label: 'MongoDB' },
+  { value: 'redis', label: 'Redis' },
+  { value: 'prisma', label: 'Prisma' },
+  { value: 'supabase', label: 'Supabase' },
+  { value: 'firebase', label: 'Firebase' },
+  // Ferramentas
+  { value: 'electron', label: 'Electron' },
+  { value: 'git', label: 'Git' },
+  { value: 'github', label: 'GitHub' },
+  { value: 'vercel', label: 'Vercel' },
+  { value: 'docker', label: 'Docker' },
+  { value: 'nginx', label: 'Nginx' },
+  { value: 'linux', label: 'Linux' },
+  { value: 'pnpm', label: 'pnpm' },
+  { value: 'npm', label: 'npm' },
+  { value: 'turborepo', label: 'Turborepo' },
+  { value: 'jest', label: 'Jest' },
+  { value: 'vitest', label: 'Vitest' },
+  { value: 'cypress', label: 'Cypress' },
+  { value: 'google', label: 'Google' },
+  // Genéricos (sem logo oficial disponível)
+  { value: 'generic-ai', label: 'Genérico · IA' },
+  { value: 'generic-api', label: 'Genérico · API' },
+  { value: 'generic-cloud', label: 'Genérico · Nuvem (AWS etc.)' },
+  { value: 'generic-database', label: 'Genérico · Banco de dados' },
+  { value: 'generic-auth', label: 'Genérico · Login / OAuth' },
+  { value: 'generic-test', label: 'Genérico · Testes' },
+  { value: 'generic-state', label: 'Genérico · Estado (Zustand etc.)' },
+  { value: 'generic-code', label: 'Genérico · Código' },
+] as const
+
+export type TechIconName = (typeof TECH_ICON_OPTIONS)[number]['value']

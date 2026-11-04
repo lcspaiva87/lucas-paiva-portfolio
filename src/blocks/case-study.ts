@@ -7,10 +7,11 @@ const label: Field = {
   name: 'label',
   label: 'Rótulo',
   type: 'text',
+  localized: true,
   admin: { description: 'Ex.: "O problema". O número é adicionado automaticamente.' },
 }
 
-const heading: Field = { name: 'heading', label: 'Título', type: 'text' }
+const heading: Field = { name: 'heading', label: 'Título', type: 'text', localized: true }
 
 export const TextColumnsBlock: Block = {
   slug: 'textColumns',
@@ -25,7 +26,7 @@ export const TextColumnsBlock: Block = {
       maxRows: 2,
       required: true,
       labels: { singular: 'Coluna', plural: 'Colunas' },
-      fields: [label, heading, { name: 'body', label: 'Texto', type: 'richText' }],
+      fields: [label, heading, { name: 'body', label: 'Texto', type: 'richText', localized: true }],
     },
   ],
 }
@@ -52,10 +53,10 @@ export const FeatureGridBlock: Block = {
               options: [...GLYPHS],
               admin: { width: '30%' },
             },
-            { name: 'title', label: 'Título', type: 'text', required: true },
+            { name: 'title', label: 'Título', type: 'text', required: true, localized: true },
           ],
         },
-        { name: 'description', label: 'Descrição', type: 'textarea' },
+        { name: 'description', label: 'Descrição', type: 'textarea', localized: true },
       ],
     },
   ],
@@ -74,8 +75,8 @@ export const ChallengesBlock: Block = {
       minRows: 1,
       labels: { singular: 'Desafio', plural: 'Desafios' },
       fields: [
-        { name: 'title', label: 'Título', type: 'text', required: true },
-        { name: 'description', label: 'Como resolvi', type: 'textarea' },
+        { name: 'title', label: 'Título', type: 'text', required: true, localized: true },
+        { name: 'description', label: 'Como resolvi', type: 'textarea', localized: true },
       ],
     },
   ],
@@ -104,7 +105,7 @@ export const GalleryBlock: Block = {
       labels: { singular: 'Imagem', plural: 'Imagens' },
       fields: [
         { name: 'image', label: 'Imagem', type: 'upload', relationTo: 'media', required: true },
-        { name: 'caption', label: 'Legenda', type: 'text' },
+        { name: 'caption', label: 'Legenda', type: 'text', localized: true },
       ],
     },
   ],
@@ -131,9 +132,16 @@ export const MetricsBlock: Block = {
               label: 'Valor',
               type: 'text',
               required: true,
+              localized: true,
               admin: { placeholder: '+40%' },
             },
-            { name: 'description', label: 'Descrição', type: 'text', required: true },
+            {
+              name: 'description',
+              label: 'Descrição',
+              type: 'text',
+              required: true,
+              localized: true,
+            },
           ],
         },
       ],
@@ -147,7 +155,7 @@ export const RichTextBlock: Block = {
   fields: [
     label,
     heading,
-    { name: 'content', label: 'Conteúdo', type: 'richText', required: true },
+    { name: 'content', label: 'Conteúdo', type: 'richText', required: true, localized: true },
   ],
 }
 

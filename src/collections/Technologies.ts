@@ -4,6 +4,7 @@ import { anyone, authenticated } from '@/access'
 import { colorField } from '@/fields/color'
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidate'
 import { CACHE_TAGS } from '@/lib/cache-tags'
+import { TECH_ICON_OPTIONS } from '@/lib/tech-icon-options'
 
 export const TECH_GROUPS = [
   { value: 'frontend', label: 'Front-end' },
@@ -41,14 +42,30 @@ export const Technologies: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'name', label: 'Nome', type: 'text', required: true, unique: true },
         {
-          name: 'abbr',
-          label: 'Sigla do ícone',
+          name: 'name',
+          label: 'Nome',
           type: 'text',
           required: true,
+          unique: true,
+          localized: true,
+        },
+        {
+          name: 'icon',
+          label: 'Logo',
+          type: 'select',
+          options: [...TECH_ICON_OPTIONS],
+          admin: { description: 'Logo oficial ou ícone genérico.', width: '35%' },
+        },
+        {
+          name: 'abbr',
+          label: 'Sigla (sem logo)',
+          type: 'text',
           maxLength: 3,
-          admin: { description: 'Ex.: Re, TS, ▲', width: '30%' },
+          admin: {
+            description: 'Usada só se não houver logo. Ex.: Re, TS.',
+            width: '25%',
+          },
         },
       ],
     },
