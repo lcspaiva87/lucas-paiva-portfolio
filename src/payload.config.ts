@@ -1,6 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { en } from '@payloadcms/translations/languages/en'
 import { pt } from '@payloadcms/translations/languages/pt'
 import path from 'path'
@@ -87,16 +87,25 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // Na Vercel os uploads vão para o Vercel Blob (a Vercel cria BLOB_READ_WRITE_TOKEN ao
-    // conectar o Blob ao projeto); sem o token, continuam no disco (dev local).
-    vercelBlobStorage({
-      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    // Em produção os uploads vão para um bucket do Cloudflare R2 (API compatível com S3);
+    // sem S3_BUCKET, continuam no disco (dev local). O bucket pode ser privado: o Payload
+    // serve os arquivos em /api/media/file.
+    s3Storage({
+      enabled: Boolean(process.env.S3_BUCKET),
       // Mesmo schema com ou sem o plugin, para as migrations valerem nos dois casos.
       alwaysInsertFields: true,
       collections: { media: true },
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-      // O navegador envia o arquivo direto para o Blob, sem o limite de 4,5 MB da Vercel.
-      clientUploads: true,
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        // https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+        endpoint: process.env.S3_ENDPOINT,
+        region: process.env.S3_REGION || 'auto',
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+      },
     }),
   ],
 })
