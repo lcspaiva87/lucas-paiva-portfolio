@@ -38,18 +38,28 @@ export async function ProjectCard({
   const { href } = await getI18n()
   const Heading = headingLevel
   const cover = media(project.cover)
+  const logo = media(project.logo)
   const techs = populated<Technology>(project.technologies)
   const linked = hasCaseStudy(project)
 
   const body = (
     <>
       <div className="relative z-[1] flex min-w-0 flex-[1_1_55%] flex-col gap-3.5 p-6 sm:p-7">
-        <span
-          aria-hidden="true"
-          className="flex size-11 items-center justify-center rounded-xl bg-(--accent) text-white"
-        >
-          <Glyph icon={project.glyph} className="size-[22px]" strokeWidth={2.2} />
-        </span>
+        {logo ? (
+          <span
+            aria-hidden="true"
+            className="relative size-11 overflow-hidden rounded-xl border border-border"
+          >
+            <Image src={logo.url!} alt="" fill sizes="44px" className="object-cover" />
+          </span>
+        ) : (
+          <span
+            aria-hidden="true"
+            className="flex size-11 items-center justify-center rounded-xl bg-(--accent) text-white"
+          >
+            <Glyph icon={project.glyph} className="size-[22px]" strokeWidth={2.2} />
+          </span>
+        )}
         <Heading className="m-0 text-[26px] font-extrabold tracking-[-0.03em]">
           {linked ? (
             <Link

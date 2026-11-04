@@ -1,5 +1,6 @@
 import * as migration_20261103_211201_initial from './20261103_211201_initial';
 import * as migration_20261104_004032_localization from './20261104_004032_localization';
+import * as migration_20261104_185643_project_logo from './20261104_185643_project_logo';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20261104_004032_localization.up,
     down: migration_20261104_004032_localization.down,
-    name: '20261104_004032_localization'
+    name: '20261104_004032_localization',
+  },
+  {
+    up: migration_20261104_185643_project_logo.up,
+    down: migration_20261104_185643_project_logo.down,
+    name: '20261104_185643_project_logo'
   },
 ];

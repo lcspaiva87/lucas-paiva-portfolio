@@ -113,6 +113,16 @@ export const Projects: CollectionConfig = {
               ],
             },
             {
+              name: 'logo',
+              label: 'Logo',
+              type: 'upload',
+              relationTo: 'media',
+              filterOptions: { mimeType: { contains: 'image' } },
+              admin: {
+                description: 'Opcional. Imagem quadrada; substitui o ícone no quadrado do card.',
+              },
+            },
+            {
               name: 'cover',
               label: 'Imagem do card',
               type: 'upload',

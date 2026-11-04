@@ -176,6 +176,10 @@ export interface Project {
    */
   accentColor?: string | null;
   /**
+   * Opcional. Imagem quadrada; substitui o ícone no quadrado do card.
+   */
+  logo?: (number | null) | Media;
+  /**
    * Screenshot ou mockup. Sem imagem, o card usa uma ilustração.
    */
   cover?: (number | null) | Media;
@@ -670,6 +674,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   tagline?: T;
   glyph?: T;
   accentColor?: T;
+  logo?: T;
   cover?: T;
   technologies?: T;
   summary?: T;
