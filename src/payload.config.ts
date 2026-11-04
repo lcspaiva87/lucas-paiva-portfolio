@@ -30,6 +30,13 @@ export default buildConfig({
       titleSuffix: ' · Painel Lucas Paiva',
     },
     components: {
+      // Marca e fontes do site; as cores ficam em app/(payload)/custom.scss.
+      graphics: {
+        Logo: '/components/admin/graphics#AdminLogo',
+        Icon: '/components/admin/graphics#AdminIcon',
+      },
+      providers: ['/components/admin/brand-fonts#BrandFonts'],
+      beforeDashboard: ['/components/admin/welcome#Welcome'],
       // Com o banco vazio, o Payload abre essa tela; o cadastro é fechado (ver Users).
       views: {
         createFirstUser: { Component: '/components/admin/signup-closed#SignupClosed' },

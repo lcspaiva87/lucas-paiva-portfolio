@@ -1,0 +1,337 @@
+/*
+ * Identidade do site no painel. O Payload declara o tema dentro de @layer, então
+ * estas regras (fora de layer) vencem sem !important.
+ */
+
+/* Cinzas quentes do site no lugar dos neutros do Payload. No tema escuro o Payload
+   inverte a escala: o fundo usa base-900 e o texto base-0. */
+:root {
+  --color-base-0: #f7f5f0;
+  --color-base-50: #efece6;
+  --color-base-100: #e7e3dc;
+  --color-base-150: #ddd9d0;
+  --color-base-200: #d2cdc4;
+  --color-base-250: #c4bfb6;
+  --color-base-300: #b5b0a7;
+  --color-base-350: #a6a199;
+  --color-base-400: #97938b;
+  --color-base-450: #8c8983;
+  --color-base-500: #7b7872;
+  --color-base-550: #6b6863;
+  --color-base-600: #5b5954;
+  --color-base-650: #4a4844;
+  --color-base-700: #3a3936;
+  --color-base-750: #2c2b29;
+  --color-base-800: #21201e;
+  --color-base-850: #181716;
+  --color-base-900: #0f0f0e;
+  --color-base-950: #080807;
+  --color-base-1000: #000000;
+
+  /* O Payload usa "success" como cor de destaque (foco, links, seleção): vira laranja. */
+  --color-success-50: #fff4ee;
+  --color-success-100: #ffe6d9;
+  --color-success-150: #ffd3bd;
+  --color-success-200: #ffbf9f;
+  --color-success-250: #ffa982;
+  --color-success-300: #ff9466;
+  --color-success-350: #ff8050;
+  --color-success-400: #ff6d38;
+  --color-success-450: #ff5a1f;
+  --color-success-500: #e8480f;
+  --color-success-550: #cc3f0d;
+  --color-success-600: #b0360b;
+  --color-success-650: #962e0a;
+  --color-success-700: #7d2709;
+  --color-success-750: #662008;
+  --color-success-800: #521a07;
+  --color-success-850: #401506;
+  --color-success-900: #301005;
+  --color-success-950: #220b04;
+
+  --brand: #e8480f;
+  --brand-deep: #0d0d0c;
+  --brand-soft: #ffe1d4;
+  --brand-ink: #a3300a;
+
+  --style-radius-s: 6px;
+  --style-radius-m: 10px;
+  --style-radius-l: 14px;
+
+  --lp-shadow: rgb(13 13 12 / 0.14);
+}
+
+html[data-theme='dark'] {
+  --brand: #ff5a1f;
+  --brand-deep: #8a2e0b;
+  --brand-soft: #3d1c0f;
+  --brand-ink: #ff8a5c;
+  --lp-shadow: rgb(0 0 0 / 0.5);
+}
+
+::selection {
+  background: var(--brand);
+  color: #ffffff;
+}
+
+/* Botão principal igual ao do site: laranja com texto branco. */
+.btn--style-primary:not(.btn--disabled) {
+  --bg-color: var(--brand);
+  --color: #ffffff;
+  --hover-bg: var(--brand);
+  --hover-color: #ffffff;
+  font-weight: 700;
+  transition:
+    translate 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    translate: 0 -2px;
+    box-shadow: 0 14px 32px -12px color-mix(in oklab, var(--brand) 70%, transparent);
+  }
+}
+
+/* Item ativo da navegação com a barrinha laranja. */
+.nav__link-indicator {
+  background: var(--brand);
+}
+
+/* ------------------------------------------------------------------ */
+/* Marca                                                               */
+
+.lp-mark {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* O Payload reserva 16px para o ícone da navegação; o monograma pede um pouco mais. */
+.step-nav__home {
+  width: 22px;
+  height: 22px;
+}
+
+.lp-mark__face {
+  fill: var(--brand);
+}
+
+.lp-mark__shadow {
+  fill: var(--brand-deep);
+}
+
+.lp-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--theme-text);
+}
+
+.lp-logo__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lp-logo__name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.lp-logo__dot {
+  display: inline-block;
+  width: 0.27em;
+  height: 0.27em;
+  margin-left: 2px;
+  background: var(--brand);
+}
+
+.lp-logo__sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+/* ------------------------------------------------------------------ */
+/* Login e telas de entrada                                            */
+
+/* Brilho laranja discreto atrás do formulário, como no hero do site. */
+.template-minimal {
+  background:
+    radial-gradient(
+      60% 45% at 50% 0%,
+      color-mix(in oklab, var(--brand) 14%, transparent),
+      transparent 70%
+    ),
+    var(--theme-bg);
+}
+
+.login__brand {
+  margin-bottom: calc(var(--base) * 2.5);
+}
+
+/* ------------------------------------------------------------------ */
+/* Cadastro fechado                                                    */
+
+.lp-closed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--base) * 2);
+}
+
+.lp-closed__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--base) * 0.75);
+  width: 100%;
+  padding: calc(var(--base) * 2);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-l);
+  background: var(--theme-elevation-50);
+  box-shadow: 0 24px 60px -32px var(--lp-shadow);
+}
+
+.lp-closed__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  font-size: 12px;
+  font-weight: 700;
+
+  svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+}
+
+.lp-closed__title {
+  margin: calc(var(--base) * 0.25) 0 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.lp-closed__text,
+.lp-closed__hint {
+  margin: 0;
+  color: var(--theme-elevation-650);
+}
+
+.lp-closed__hint {
+  font-size: 12px;
+  color: var(--theme-elevation-500);
+}
+
+.lp-closed__command {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--theme-text);
+
+  span {
+    margin-right: 6px;
+    color: var(--brand);
+  }
+}
+
+.lp-closed__cta {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: calc(var(--base) * 0.5) 0 0;
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Painel inicial                                                      */
+
+.lp-welcome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(var(--base) * 1.5);
+  margin-bottom: calc(var(--base) * 2);
+  padding: calc(var(--base) * 2);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-l);
+  background:
+    radial-gradient(
+      80% 120% at 100% 0%,
+      color-mix(in oklab, var(--brand) 16%, transparent),
+      transparent 60%
+    ),
+    var(--theme-elevation-50);
+}
+
+.lp-welcome__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 560px;
+}
+
+.lp-welcome__eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+
+.lp-welcome__title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.lp-welcome__lead {
+  margin: 0;
+  color: var(--theme-elevation-650);
+}
+
+.lp-welcome__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .btn {
+    margin: 0;
+    text-decoration: none;
+  }
+}
+
+/* Cards do painel inicial: borda laranja no hover. */
+.card {
+  transition: border-color 0.25s ease;
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--brand) 55%, var(--theme-elevation-150));
+  }
+}
+
+/* O site não envia e-mail, então "Esqueceu a senha?" não leva a lugar nenhum.
+   A senha é trocada com `pnpm admin`. */
+a[href$='/admin/forgot'] {
+  display: none;
+}
