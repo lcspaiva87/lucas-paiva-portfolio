@@ -4,7 +4,7 @@ Base visual: canvas "Portfólio Lucas Paiva" (Direção visual, Home desktop/mob
 
 ## Decisões (03/11/2026)
 - **Painel:** Payload CMS embutido no Next.js (`/admin`)
-- **Infra de produção:** Supabase (Postgres + Storage S3) e Vercel. Em dev, banco `portfolio` num Postgres local em Docker (ver `.env.example`) e uploads em disco (`/media`)
+- **Infra de produção:** Vercel, com Neon (Postgres) e Vercel Blob (uploads). Em dev, banco `portfolio` num Postgres local em Docker (ver `.env.example`) e uploads em disco (`/media`)
 - **Runtime:** Node 24.22.2 (`.nvmrc`), Next.js 16.3, Payload 3.92, pnpm
 - **Editável pelo painel:** projetos + stack/tecnologias + experiência + perfil e textos do site
 
@@ -138,8 +138,8 @@ Uploads com alt text obrigatório e tamanhos gerados (thumb, card, full).
 ### Fase 5 — SEO e lançamento
 - [x] `generateMetadata` por página, OG image dinâmica (`next/og`), `sitemap.xml`, `robots.txt`, JSON-LD (Person + SoftwareApplication)
 - [x] Acessibilidade: axe sem violações (3 páginas × 2 temas), menu mobile com foco gerenciado, fallback sem JS
-- [x] Preparação de produção: migrations do Payload (rodam sozinhas na Vercel), uploads no Supabase Storage (S3), site resistente a banco vazio — passo a passo em `DEPLOY.md`
-- [ ] Contas e variáveis (Supabase + Vercel) — com você, seguindo o `DEPLOY.md`
+- [x] Preparação de produção: migrations do Payload (rodam sozinhas na Vercel), uploads no Vercel Blob, site resistente a banco vazio — passo a passo em `DEPLOY.md`
+- [ ] Contas e variáveis (Vercel, Neon e Blob) — com você, seguindo o `DEPLOY.md`
 - [ ] Deploy na Vercel (`development` → `main`) + domínio
 - [ ] Formulário de contato funcionando
 - [ ] Analytics (Vercel Analytics)

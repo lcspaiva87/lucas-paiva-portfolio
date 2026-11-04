@@ -1,63 +1,59 @@
-# Deploy — Supabase + Vercel
+# Deploy — Vercel + Neon + Vercel Blob
 
-O código já está pronto para produção: as migrations do banco rodam sozinhas no build da Vercel e as imagens do painel vão para o Supabase Storage. Estes passos são os que dependem das suas contas.
+O código já está pronto para produção: as migrations do banco rodam sozinhas no build da Vercel e as imagens do painel vão para o Vercel Blob. Estes passos são os que dependem da sua conta.
 
-Tempo estimado: 15 minutos.
+Tempo estimado: 10 minutos.
 
-## 1. Supabase: banco e storage
+## 1. Banco (Neon)
 
-1. Em [supabase.com](https://supabase.com), crie um projeto (região **South America (São Paulo)**). Guarde a senha do banco.
-2. **Banco:** _Connect_ › _Connection string_ › **Transaction pooler** (porta `6543`). Copie a URI e troque `[YOUR-PASSWORD]` pela senha. Esse é o `DATABASE_URL`.
-3. **Storage:** _Storage_ › _New bucket_ › nome `media`. Pode ser privado: o site busca as imagens pelo Payload.
-4. **Chaves S3:** _Project Settings_ › _Storage_ › _S3 Connection_:
-   - copie o **Endpoint** (`S3_ENDPOINT`) e a **Region** (`S3_REGION`);
-   - em _Access keys_, crie uma chave e copie **Access key ID** e **Secret access key** (o secret só aparece uma vez).
+Na Vercel, _Storage_ › _Create Database_ › **Neon** e conecte ao projeto (ambientes **Production** e **Preview**). A integração cria o `DATABASE_URL` sozinha, junto com outras variáveis (`PG*`, `POSTGRES_*`) que o site não usa.
 
-## 2. Conteúdo inicial (opcional, recomendado)
+## 2. Imagens (Vercel Blob)
 
-No seu computador, rode o seed apontando para o banco do Supabase. Ele cria as tabelas (migrations) e cadastra tecnologias, projetos, experiências e perfil:
+_Storage_ › _Create Database_ › **Blob** e conecte ao projeto (**Production** e **Preview**). A Vercel cria o `BLOB_READ_WRITE_TOKEN`. Sem ele, o painel até abre, mas os uploads (foto, currículo, telas) falham em produção.
 
-```bash
-DATABASE_URL="URI-DO-SUPABASE" RUN_MIGRATIONS=true NODE_ENV=production pnpm seed
-```
+## 3. Variáveis que faltam
 
-Sem esse passo o site também sobe: o primeiro deploy cria as tabelas e a Home usa os textos padrão até você preencher o painel.
+_Settings_ › _Environment Variables_ (ambientes **Production** e **Preview**):
 
-## 3. Vercel
+| Variável               | Valor                                                                     |
+| ---------------------- | ------------------------------------------------------------------------- |
+| `PAYLOAD_SECRET`       | uma string nova: `openssl rand -hex 32` (não reutilize a do `.env` local) |
+| `NEXT_PUBLIC_SITE_URL` | `https://lucas-paiva-portfolio-beige.vercel.app` (sem barra no final)     |
 
-1. _Settings_ › _Environment Variables_ (ambientes **Production** e **Preview**):
+Confira também:
 
-   | Variável               | Valor                                                                     |
-   | ---------------------- | ------------------------------------------------------------------------- |
-   | `DATABASE_URL`         | URI do Transaction pooler                                                 |
-   | `PAYLOAD_SECRET`       | uma string nova: `openssl rand -hex 32` (não reutilize a do `.env` local) |
-   | `NEXT_PUBLIC_SITE_URL` | `https://SEU-PROJETO.vercel.app` (sem barra no final)                     |
-   | `S3_BUCKET`            | `media`                                                                   |
-   | `S3_ENDPOINT`          | endpoint do passo 1.4                                                     |
-   | `S3_REGION`            | região do passo 1.4                                                       |
-   | `S3_ACCESS_KEY_ID`     | access key do passo 1.4                                                   |
-   | `S3_SECRET_ACCESS_KEY` | secret do passo 1.4                                                       |
+- _Settings_ › _Git_ › **Production Branch: `main`**. A branch padrão do GitHub é `development`, então sem isso a Vercel publicaria a `development` como produção.
+- _Settings_ › _Build and Deployment_ › **Node.js Version: 24.x ou mais nova** (o Payload exige Node ≥ 24.22.1).
 
-2. _Settings_ › _Git_ › **Production Branch: `main`**. A branch padrão do GitHub é `development`, então sem isso a Vercel publicaria a `development` como produção.
-3. _Settings_ › _General_ › **Node.js Version: 24.x** (o Payload exige Node ≥ 24.22.1).
-4. Faça um novo deploy (_Deployments_ › _Redeploy_), ou abra o PR `development` → `main`.
+Depois, _Deployments_ › último deploy › _Redeploy_. Mudar variável não refaz os deploys antigos.
 
-## 4. Depois do primeiro deploy
+## 4. Conteúdo e conta de admin
 
-1. Crie a sua conta de administrador pelo terminal. O site não aceita cadastro, nem a tela de "primeiro usuário" do painel:
+O primeiro build cria as tabelas. Depois dele, no seu computador, com o `DATABASE_URL` do Neon (_Storage_ › seu banco › _.env.local_ › copie o `DATABASE_URL`):
+
+1. Conteúdo inicial (tecnologias, projetos, experiências e perfil, em pt e en):
 
    ```bash
-   DATABASE_URL="URI-DO-SUPABASE" NODE_ENV=production pnpm admin
+   DATABASE_URL="URI-DO-NEON" NODE_ENV=production pnpm seed
    ```
 
-   Ele pede e-mail, nome e senha (mínimo 12 caracteres). Rodar de novo com o mesmo e-mail troca a senha. Depois, entre em `https://SEU-PROJETO.vercel.app/admin`.
+   Sem esse passo o site também sobe: a Home usa os textos padrão até você preencher o painel.
 
-2. Preencha no painel o que falta: e-mail, LinkedIn, foto, currículo (PDF) e telas do CalorieUp.
-3. Teste a prévia de compartilhamento colando o link no LinkedIn ou no WhatsApp.
+2. Conta de administrador. O site não aceita cadastro, nem a tela de "primeiro usuário" do painel:
+
+   ```bash
+   DATABASE_URL="URI-DO-NEON" NODE_ENV=production pnpm admin
+   ```
+
+   Ele pede e-mail, nome e senha (mínimo 12 caracteres). Rodar de novo com o mesmo e-mail troca a senha. Depois, entre em `https://lucas-paiva-portfolio-beige.vercel.app/admin`.
+
+3. Preencha no painel o que falta: e-mail, LinkedIn, foto, currículo (PDF) e telas do CalorieUp.
+4. Teste a prévia de compartilhamento colando o link no LinkedIn ou no WhatsApp.
 
 ## Observações
 
-- **Limite de upload:** a Vercel aceita requisições de até 4,5 MB. Imagens maiores precisam ser comprimidas antes de subir.
+- **Previews usam o mesmo banco:** com o Neon ligado em Production e Preview, os deploys de PR leem e gravam no banco de produção. As migrations de um PR rodam nele já no preview.
 - **Domínio próprio:** em _Settings_ › _Domains_, depois atualize `NEXT_PUBLIC_SITE_URL` e faça redeploy.
 - **Mudanças no schema:** ao alterar coleções, gere uma migration com `pnpm payload migrate:create nome` e commite junto. Ela roda sozinha no próximo deploy.
 - **Banco local:** continua sendo sincronizado direto pelo Payload em dev. Não rode `RUN_MIGRATIONS=true` contra ele.
