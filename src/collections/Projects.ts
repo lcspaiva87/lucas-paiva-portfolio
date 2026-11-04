@@ -240,7 +240,10 @@ export const Projects: CollectionConfig = {
               relationTo: 'media',
               hasMany: true,
               maxRows: 3,
-              admin: { description: 'Até 3 screenshots; a do meio ganha destaque.' },
+              admin: {
+                description:
+                  'App mobile: até 3 telas de celular, a do meio em destaque. Web ou SaaS: a 1ª é o print de desktop (mostrado numa janela de navegador) e a 2ª, opcional, a versão no celular.',
+              },
             },
             {
               name: 'layout',

@@ -204,7 +204,7 @@ export interface Project {
       }[]
     | null;
   /**
-   * Até 3 screenshots; a do meio ganha destaque.
+   * App mobile: até 3 telas de celular, a do meio em destaque. Web ou SaaS: a 1ª é o print de desktop (mostrado numa janela de navegador) e a 2ª, opcional, a versão no celular.
    */
   heroImages?: (number | Media)[] | null;
   layout?:
