@@ -50,7 +50,7 @@ O primeiro build cria as tabelas. Depois dele, no seu computador, com o `DATABAS
 
    Sem esse passo o site também sobe: a Home usa os textos padrão até você preencher o painel.
 
-2. Conta de administrador. O site não aceita cadastro, nem a tela de "primeiro usuário" do painel:
+2. Conta de administrador. O site não aceita cadastro (a rota de "primeiro usuário" do painel responde 404):
 
    ```bash
    DATABASE_URL="URI-DO-NEON" NODE_ENV=production pnpm admin

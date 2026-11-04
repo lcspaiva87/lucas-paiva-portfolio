@@ -57,8 +57,6 @@
   --style-radius-s: 6px;
   --style-radius-m: 10px;
   --style-radius-l: 14px;
-
-  --lp-shadow: rgb(13 13 12 / 0.14);
 }
 
 html[data-theme='dark'] {
@@ -66,7 +64,6 @@ html[data-theme='dark'] {
   --brand-deep: #8a2e0b;
   --brand-soft: #3d1c0f;
   --brand-ink: #ff8a5c;
-  --lp-shadow: rgb(0 0 0 / 0.5);
 }
 
 ::selection {
@@ -156,7 +153,7 @@ html[data-theme='dark'] {
 }
 
 /* ------------------------------------------------------------------ */
-/* Login e telas de entrada                                            */
+/* Login                                                               */
 
 /* Brilho laranja discreto atrás do formulário, como no hero do site. */
 .template-minimal {
@@ -171,92 +168,6 @@ html[data-theme='dark'] {
 
 .login__brand {
   margin-bottom: calc(var(--base) * 2.5);
-}
-
-/* ------------------------------------------------------------------ */
-/* Cadastro fechado                                                    */
-
-.lp-closed {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(var(--base) * 2);
-}
-
-.lp-closed__card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: calc(var(--base) * 0.75);
-  width: 100%;
-  padding: calc(var(--base) * 2);
-  border: 1px solid var(--theme-elevation-150);
-  border-radius: var(--style-radius-l);
-  background: var(--theme-elevation-50);
-  box-shadow: 0 24px 60px -32px var(--lp-shadow);
-}
-
-.lp-closed__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--brand-soft);
-  color: var(--brand-ink);
-  font-size: 12px;
-  font-weight: 700;
-
-  svg {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-  }
-}
-
-.lp-closed__title {
-  margin: calc(var(--base) * 0.25) 0 0;
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-}
-
-.lp-closed__text,
-.lp-closed__hint {
-  margin: 0;
-  color: var(--theme-elevation-650);
-}
-
-.lp-closed__hint {
-  font-size: 12px;
-  color: var(--theme-elevation-500);
-}
-
-.lp-closed__command {
-  display: block;
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid var(--theme-elevation-150);
-  border-radius: var(--style-radius-m);
-  background: var(--theme-elevation-0);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--theme-text);
-
-  span {
-    margin-right: 6px;
-    color: var(--brand);
-  }
-}
-
-.lp-closed__cta {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: calc(var(--base) * 0.5) 0 0;
-  text-decoration: none;
 }
 
 /* ------------------------------------------------------------------ */
