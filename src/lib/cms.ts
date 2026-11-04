@@ -4,9 +4,10 @@ import config from '@payload-config'
 import { cacheLife, cacheTag } from 'next/cache'
 import { getPayload } from 'payload'
 
+import { DEFAULT_LOCALE } from '@/i18n/config'
 import type { Experience, Media, Profile, Project, Technology } from '@/payload-types'
 
-import { profile as defaultProfile } from '@/seed/content'
+import { profileFor } from '@/seed/content'
 
 import { CACHE_TAGS } from './cache-tags'
 
@@ -24,7 +25,7 @@ export async function getProfile(): Promise<Profile> {
   const filled = Object.fromEntries(
     Object.entries(profile).filter(([, value]) => value !== null && value !== undefined),
   )
-  return { ...defaultProfile, ...filled } as unknown as Profile
+  return { ...profileFor(DEFAULT_LOCALE), ...filled } as unknown as Profile
 }
 
 export async function getTechnologies(): Promise<Technology[]> {
