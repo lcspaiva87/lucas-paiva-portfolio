@@ -20,6 +20,14 @@ import { migrations } from './migrations'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+function isLocalDatabase(url = '') {
+  try {
+    return ['localhost', '127.0.0.1', '[::1]'].includes(new URL(url).hostname)
+  } catch {
+    return false
+  }
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -72,6 +80,10 @@ export default buildConfig({
     // o banco de dev não roda migrations (o Payload pediria para apagar dados).
     prodMigrations:
       process.env.VERCEL === '1' || process.env.RUN_MIGRATIONS === 'true' ? migrations : undefined,
+    // O push só vale para o banco local. Contra o Neon, um `pnpm seed` sem NODE_ENV=production
+    // criaria as tabelas por fora das migrations e o próximo deploy falharia com
+    // "relation already exists"; assim ele só falha, sem mexer no banco.
+    push: isLocalDatabase(process.env.DATABASE_URL),
   }),
   sharp,
   plugins: [
