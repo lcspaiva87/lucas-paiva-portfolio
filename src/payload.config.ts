@@ -45,7 +45,7 @@ export default buildConfig({
       },
       providers: ['/components/admin/brand-fonts#BrandFonts'],
       beforeDashboard: ['/components/admin/welcome#Welcome'],
-      // Com o banco vazio, o Payload abre essa tela; o cadastro é fechado (ver Users).
+      // O cadastro é fechado (ver Users): a tela de primeiro usuário responde 404.
       views: {
         createFirstUser: { Component: '/components/admin/signup-closed#SignupClosed' },
       },
