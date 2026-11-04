@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react'
 
 import { Glyph } from '@/components/glyph'
 import { TiltCard } from '@/components/motion/tilt-card'
+import { Badge } from '@/components/ui/badge'
 import { TechIcon } from '@/components/ui/tech-chip'
 import { getI18n } from '@/i18n/server'
 import { hasCaseStudy, media, populated } from '@/lib/cms'
@@ -35,7 +36,7 @@ export async function ProjectCard({
   project: Project
   headingLevel?: 'h2' | 'h3'
 }) {
-  const { href } = await getI18n()
+  const { href, t } = await getI18n()
   const Heading = headingLevel
   const cover = media(project.cover)
   const logo = media(project.logo)
@@ -45,21 +46,29 @@ export async function ProjectCard({
   const body = (
     <>
       <div className="relative z-[1] flex min-w-0 flex-[1_1_55%] flex-col gap-3.5 p-6 sm:p-7">
-        {logo ? (
-          <span
-            aria-hidden="true"
-            className="relative size-11 overflow-hidden rounded-xl border border-border"
-          >
-            <Image src={logo.url!} alt="" fill sizes="44px" className="object-cover" />
-          </span>
-        ) : (
-          <span
-            aria-hidden="true"
-            className="flex size-11 items-center justify-center rounded-xl bg-(--accent) text-white"
-          >
-            <Glyph icon={project.glyph} className="size-[22px]" strokeWidth={2.2} />
-          </span>
-        )}
+        <div className="flex flex-wrap items-center gap-3">
+          {logo ? (
+            <span
+              aria-hidden="true"
+              className="relative size-11 overflow-hidden rounded-xl border border-border"
+            >
+              <Image src={logo.url!} alt="" fill sizes="44px" className="object-cover" />
+            </span>
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex size-11 items-center justify-center rounded-xl bg-(--accent) text-white"
+            >
+              <Glyph icon={project.glyph} className="size-[22px]" strokeWidth={2.2} />
+            </span>
+          )}
+          {/* Só o que não está em produção ganha etiqueta; "em produção" é o padrão. */}
+          {project.stage !== 'production' && (
+            <Badge variant={project.stage === 'development' ? 'placeholder' : 'neutral'}>
+              {t.stage[project.stage]}
+            </Badge>
+          )}
+        </div>
         <Heading className="m-0 text-[26px] font-extrabold tracking-[-0.03em]">
           {linked ? (
             <Link
