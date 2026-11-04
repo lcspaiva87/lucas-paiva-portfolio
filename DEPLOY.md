@@ -57,3 +57,8 @@ O primeiro build cria as tabelas. Depois dele, no seu computador, com o `DATABAS
 - **Domínio próprio:** em _Settings_ › _Domains_, depois atualize `NEXT_PUBLIC_SITE_URL` e faça redeploy.
 - **Mudanças no schema:** ao alterar coleções, gere uma migration com `pnpm payload migrate:create nome` e commite junto. Ela roda sozinha no próximo deploy.
 - **Banco local:** continua sendo sincronizado direto pelo Payload em dev. Não rode `RUN_MIGRATIONS=true` contra ele.
+- **Build falha com `relation "..." already exists`:** as tabelas do Neon foram criadas fora das migrations (por exemplo, um `pnpm seed` rodado sem `NODE_ENV=production` antes desta proteção existir). Recrie o banco pelas migrations — apaga tudo, então só enquanto não houver conteúdo de verdade — e depois rode de novo o seed e o admin do passo 4:
+
+  ```bash
+  DATABASE_URL="URI-DO-NEON" NODE_ENV=production pnpm payload migrate:fresh
+  ```
