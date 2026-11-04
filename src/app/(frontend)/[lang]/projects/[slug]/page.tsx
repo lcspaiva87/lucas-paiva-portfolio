@@ -92,7 +92,14 @@ function PhoneFrame({
       )}
     >
       {image ? (
-        <Image src={image.url!} alt={image.alt} fill sizes="280px" className="object-cover" />
+        // Alinhado pelo topo: se o print for mais alto que a moldura, corta embaixo, não o cabeçalho.
+        <Image
+          src={image.url!}
+          alt={image.alt}
+          fill
+          sizes="280px"
+          className="object-cover object-top"
+        />
       ) : (
         highlight && (
           <span className="absolute inset-x-6 top-1/3 text-center font-mono text-xs text-placeholder">
@@ -102,6 +109,57 @@ function PhoneFrame({
       )}
     </div>
   )
+}
+
+/** Janela de navegador para projetos web: o print de desktop com a barra de endereço. */
+function BrowserFrame({
+  image,
+  address,
+  placeholder,
+}: {
+  image?: Media | null
+  address?: string | null
+  placeholder?: string
+}) {
+  return (
+    <div className="relative -mb-10 w-full max-w-[1040px] overflow-hidden rounded-t-[18px] border-[1.5px] border-b-0 border-border-strong bg-background shadow-[0_-24px_80px_-40px_var(--glow)]">
+      <div className="flex h-10 items-center gap-3 border-b border-border px-4">
+        <span aria-hidden="true" className="flex gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <span key={i} className="size-2.5 rounded-full bg-border-strong" />
+          ))}
+        </span>
+        {address && (
+          <span className="mx-auto max-w-[60%] truncate rounded-full bg-muted px-4 py-1 font-mono text-[11px] text-muted-foreground">
+            {address}
+          </span>
+        )}
+      </div>
+      <div className="relative aspect-[16/10] w-full">
+        {image ? (
+          <Image
+            src={image.url!}
+            alt={image.alt}
+            fill
+            sizes="(min-width: 1100px) 1040px, 100vw"
+            className="object-cover object-top"
+          />
+        ) : (
+          <span className="absolute inset-x-6 top-1/3 text-center font-mono text-xs text-placeholder">
+            {placeholder}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function hostOf(url?: string | null) {
+  try {
+    return url ? new URL(url).host : null
+  } catch {
+    return null
+  }
 }
 
 export default async function CaseStudyPage({ params }: Props) {
@@ -134,8 +192,11 @@ export default async function CaseStudyPage({ params }: Props) {
     },
   ].filter((f) => f.value)
 
-  // Três telas: a do meio em destaque. Faltando imagens, as molduras ficam vazias.
+  // App: três telas de celular, a do meio em destaque. Web: a 1ª imagem no navegador e a 2ª,
+  // opcional, num celular sobreposto. Faltando imagens, as molduras ficam vazias.
+  const isWeb = project.category !== 'mobile'
   const phones = [heroImages[1] ?? null, heroImages[0] ?? null, heroImages[2] ?? null]
+  const address = hostOf(project.links?.find((link) => link.kind === 'website')?.url)
 
   return (
     <article>
@@ -191,14 +252,47 @@ export default async function CaseStudyPage({ params }: Props) {
       </header>
 
       <div className="container-page pt-20">
-        <div className="relative flex h-[440px] items-end justify-center gap-8 overflow-hidden rounded-panel border border-border bg-card sm:h-[640px]">
+        <div
+          className={cn(
+            'relative flex items-end justify-center gap-8 overflow-hidden rounded-panel border border-border bg-card',
+            // A janela 16:10 é mais baixa que os celulares em telas estreitas.
+            isWeb ? 'h-[280px] sm:h-[480px] lg:h-[640px]' : 'h-[440px] sm:h-[640px]',
+          )}
+        >
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,color-mix(in_oklab,var(--primary)_18%,transparent),transparent_60%)]"
           />
-          <PhoneFrame image={phones[1]} />
-          <PhoneFrame image={phones[0]} highlight placeholder={t.caseStudy.screensPlaceholder} />
-          <PhoneFrame image={phones[2]} />
+          {isWeb ? (
+            <div className="relative flex w-full justify-center px-5 pt-8 sm:px-12">
+              <BrowserFrame
+                image={heroImages[0]}
+                address={address}
+                placeholder={t.caseStudy.screensPlaceholder}
+              />
+              {heroImages[1] && (
+                <div className="absolute right-[6%] bottom-0 hidden h-[400px] w-[190px] overflow-hidden rounded-[34px] border-[1.5px] border-primary bg-background shadow-[0_20px_60px_-20px_rgb(0_0_0/0.6)] lg:block">
+                  <Image
+                    src={heroImages[1].url!}
+                    alt={heroImages[1].alt}
+                    fill
+                    sizes="190px"
+                    className="object-cover object-top"
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <PhoneFrame image={phones[1]} />
+              <PhoneFrame
+                image={phones[0]}
+                highlight
+                placeholder={t.caseStudy.screensPlaceholder}
+              />
+              <PhoneFrame image={phones[2]} />
+            </>
+          )}
         </div>
       </div>
 
