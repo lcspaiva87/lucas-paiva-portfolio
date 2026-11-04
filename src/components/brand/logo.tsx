@@ -59,4 +59,4 @@ function Logo({ markSize = 40, subtitle, className, ...props }: LogoProps) {
   )
 }
 
-export { Logo, LogoMark, Wordmark }
+export { Logo, LogoMark, MARK_PATH, Wordmark }

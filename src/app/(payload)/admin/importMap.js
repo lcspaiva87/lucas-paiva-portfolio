@@ -21,6 +21,10 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { AdminIcon as AdminIcon_626e24b987f1ce07afe3d44061a1a2bf } from '../../../components/admin/graphics'
+import { AdminLogo as AdminLogo_626e24b987f1ce07afe3d44061a1a2bf } from '../../../components/admin/graphics'
+import { Welcome as Welcome_cdb297238b4d2c8d6e0af424e47dc955 } from '../../../components/admin/welcome'
+import { BrandFonts as BrandFonts_182f4be50704d447ba95ef58059ce690 } from '../../../components/admin/brand-fonts'
 import { SignupClosed as SignupClosed_403b098b0a578fd68aa71ac283d7291f } from '../../../components/admin/signup-closed'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
@@ -50,6 +54,10 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/components/admin/graphics#AdminIcon": AdminIcon_626e24b987f1ce07afe3d44061a1a2bf,
+  "/components/admin/graphics#AdminLogo": AdminLogo_626e24b987f1ce07afe3d44061a1a2bf,
+  "/components/admin/welcome#Welcome": Welcome_cdb297238b4d2c8d6e0af424e47dc955,
+  "/components/admin/brand-fonts#BrandFonts": BrandFonts_182f4be50704d447ba95ef58059ce690,
   "/components/admin/signup-closed#SignupClosed": SignupClosed_403b098b0a578fd68aa71ac283d7291f,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
