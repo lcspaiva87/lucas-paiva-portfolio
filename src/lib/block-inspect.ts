@@ -16,3 +16,9 @@ export function isDevtoolsShortcut(event: Shortcut) {
   }
   return false
 }
+
+/** Campos de texto mantêm o menu do clique direito, para colar e corrigir ortografia. */
+export function allowsContextMenu(target: EventTarget | null) {
+  if (!(target instanceof Element)) return false
+  return !!target.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]')
+}
