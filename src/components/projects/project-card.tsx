@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
@@ -42,6 +43,12 @@ export async function ProjectCard({
   const logo = media(project.logo)
   const techs = populated<Technology>(project.technologies)
   const linked = hasCaseStudy(project)
+  // Sem case study, o card abre o produto: o site, ou a página na loja se não houver site.
+  const external = linked
+    ? null
+    : (project.links?.find((link) => link.kind === 'website') ??
+      project.links?.find((link) => link.kind === 'play-store' || link.kind === 'app-store') ??
+      null)
 
   const body = (
     <>
@@ -77,6 +84,20 @@ export async function ProjectCard({
             >
               {project.title}
             </Link>
+          ) : external ? (
+            <a
+              href={external.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-start gap-1.5 text-foreground no-underline after:absolute after:inset-0 after:z-[2]"
+            >
+              {project.title}
+              <ArrowUpRight
+                className="mt-1 size-5 text-muted-foreground transition-colors group-hover/card:text-primary"
+                aria-hidden="true"
+              />
+              <span className="sr-only">({external.label || t.link[external.kind]})</span>
+            </a>
           ) : (
             project.title
           )}
