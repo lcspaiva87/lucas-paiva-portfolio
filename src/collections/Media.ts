@@ -39,5 +39,13 @@ export const Media: CollectionConfig = {
       { name: 'full', width: 1920 },
     ],
     adminThumbnail: 'thumb',
+    // Sem isso o arquivo sai com max-age=0 e cada miniatura passa pela função de novo,
+    // chegando em branco na primeira visita. O nome do arquivo muda a cada upload,
+    // então dá para guardar: 1 dia no navegador, 1 dia na CDN servindo o antigo
+    // enquanto busca o novo em segundo plano.
+    modifyResponseHeaders: ({ headers }) => {
+      headers.set('Cache-Control', 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=2592000')
+      return headers
+    },
   },
 }
