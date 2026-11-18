@@ -958,6 +958,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Profile {
   id: number;
   name: string;
+  /**
+   * Vai no título da home ("Nome — Cargo") e no schema. Use o termo que as pessoas buscam em cada idioma.
+   */
   role: string;
   /**
    * Aparece como "> texto".

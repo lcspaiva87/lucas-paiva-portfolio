@@ -45,7 +45,11 @@ export const Profile: GlobalConfig = {
                   type: 'text',
                   required: true,
                   localized: true,
-                  admin: { placeholder: 'Software Engineer' },
+                  admin: {
+                    placeholder: 'Desenvolvedor Full-Stack',
+                    description:
+                      'Vai no título da home ("Nome — Cargo") e no schema. Use o termo que as pessoas buscam em cada idioma.',
+                  },
                 },
               ],
             },
