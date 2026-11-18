@@ -8,7 +8,7 @@ import { Stats } from '@/components/home/stats'
 import { JsonLd } from '@/components/json-ld'
 import { getLocale } from '@/i18n/server'
 import { getExperiences, getProfile, getProjects, getTechnologies } from '@/lib/cms'
-import { personSchema } from '@/lib/structured-data'
+import { homeSchema } from '@/lib/structured-data'
 
 export default async function HomePage() {
   const locale = await getLocale()
@@ -23,7 +23,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={personSchema(profile, technologies, locale)} />
+      <JsonLd data={homeSchema(profile, technologies, experiences, locale)} />
       <Hero profile={profile} heroTechs={technologies.filter((t) => t.showInHero)} />
       <Stats stats={profile.stats ?? []} />
       <About profile={profile} />
