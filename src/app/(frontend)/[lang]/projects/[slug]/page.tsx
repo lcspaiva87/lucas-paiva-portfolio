@@ -11,7 +11,14 @@ import { Button, ButtonArrow } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/section-label'
 import { LOCALES } from '@/i18n/config'
 import { getI18n } from '@/i18n/server'
-import { getProjectBySlug, getProjects, hasCaseStudy, media, populated } from '@/lib/cms'
+import {
+  getProfile,
+  getProjectBySlug,
+  getProjects,
+  hasCaseStudy,
+  media,
+  populated,
+} from '@/lib/cms'
 import { formatPeriod } from '@/lib/format'
 import { alternates } from '@/lib/seo'
 import { projectSchema } from '@/lib/structured-data'
@@ -165,9 +172,10 @@ function hostOf(url?: string | null) {
 export default async function CaseStudyPage({ params }: Props) {
   const { slug } = await params
   const { locale, t, href } = await getI18n()
-  const [project, projects] = await Promise.all([
+  const [project, projects, profile] = await Promise.all([
     getProjectBySlug(slug, locale),
     getProjects(locale),
+    getProfile(locale),
   ])
   if (!project || !hasCaseStudy(project)) notFound()
 
@@ -200,7 +208,12 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <article>
-      <JsonLd data={projectSchema(project, locale)} />
+      <JsonLd
+        data={projectSchema(project, profile, locale, {
+          home: t.nav.home,
+          projects: t.nav.projects,
+        })}
+      />
       <div className="container-page pt-6">
         <Link
           href={href('/projects')}
