@@ -6,9 +6,13 @@ import { absoluteUrl } from '@/lib/site'
 
 /** Uma entrada por idioma, cada uma apontando para as outras versões (hreflang). */
 function localized(path: string, entry: Omit<MetadataRoute.Sitemap[number], 'url'>) {
-  const languages = Object.fromEntries(
-    LOCALES.map((locale) => [HTML_LANG[locale], absoluteUrl(localePath(locale, path))]),
-  )
+  // Mesmo conjunto do <head> das páginas (lib/seo.ts), com x-default no português.
+  const languages = {
+    ...Object.fromEntries(
+      LOCALES.map((locale) => [HTML_LANG[locale], absoluteUrl(localePath(locale, path))]),
+    ),
+    'x-default': absoluteUrl(localePath(DEFAULT_LOCALE, path)),
+  }
   return LOCALES.map((locale) => ({
     ...entry,
     url: absoluteUrl(localePath(locale, path)),

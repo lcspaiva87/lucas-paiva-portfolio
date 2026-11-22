@@ -380,7 +380,7 @@ export const experiences = [
 
 export const profile = {
   name: 'Lucas Paiva',
-  role: l('Software Engineer'),
+  role: l('Desenvolvedor Full-Stack', 'Full-Stack Developer'),
   headline: l('Desenvolvedor Full-Stack', 'Full-Stack Developer'),
   intro: l(
     'Desenvolvo produtos digitais completos, do conceito à entrega, com foco em performance, experiência e impacto real no usuário.',

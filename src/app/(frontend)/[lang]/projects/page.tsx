@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { JsonLd } from '@/components/json-ld'
 import { ProjectCard } from '@/components/projects/project-card'
 import { ProjectFilter } from '@/components/projects/project-filter'
 import { Highlight } from '@/components/ui/highlight'
@@ -9,6 +10,7 @@ import { getI18n } from '@/i18n/server'
 import { getProfile, getProjects } from '@/lib/cms'
 import { plainText } from '@/lib/format'
 import { alternates } from '@/lib/seo'
+import { projectsSchema } from '@/lib/structured-data'
 import type { Project } from '@/payload-types'
 
 const CATEGORIES: Project['category'][] = ['mobile', 'web', 'saas', 'desktop']
@@ -33,6 +35,14 @@ export default async function ProjectsPage() {
 
   return (
     <div className="container-page flex flex-col gap-12 pt-16 lg:pt-24">
+      <JsonLd
+        data={projectsSchema(profile, projects, locale, {
+          home: t.nav.home,
+          projects: t.nav.projects,
+          title: t.projects.label,
+          description: t.projects.metaDescription,
+        })}
+      />
       <header className="flex flex-col gap-4">
         <SectionLabel>{t.projects.label}</SectionLabel>
         <h1 aria-label={plainText(profile.projectsHeading)} className="m-0 text-display">
