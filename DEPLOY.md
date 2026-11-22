@@ -31,6 +31,8 @@ _Settings_ › _Environment Variables_ (ambientes **Production** e **Preview**):
 | `S3_ACCESS_KEY_ID`     | Access Key ID do token do passo 2                                         |
 | `S3_SECRET_ACCESS_KEY` | Secret Access Key do token do passo 2                                     |
 
+Cada variável precisa estar marcada em **Production e Preview**. Se alguma ficar só em Production, o build de Preview falha: sem `PAYLOAD_SECRET` ele para em `Failed to collect page data for /[lang]/projects/[slug]` com `missing secret key`.
+
 Confira também:
 
 - _Settings_ › _Git_ › **Production Branch: `main`**. A branch padrão do GitHub é `development`, então sem isso a Vercel publicaria a `development` como produção.
